@@ -9,11 +9,11 @@
 body{
   margin:0;
   font-family: 'Segoe UI', sans-serif;
-  background:#f2f2f2;
+  background:#f3f3f3;
 }
 
 header{
-  background:linear-gradient(90deg,#5f00ff,#a100ff);
+  background:linear-gradient(90deg,#6a00ff,#a100ff);
   color:white;
   padding:20px;
   text-align:center;
@@ -30,7 +30,7 @@ header{
   border-radius:18px;
   padding:15px;
   margin-bottom:20px;
-  box-shadow:0 4px 15px rgba(0,0,0,0.08);
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
   transition:0.3s;
 }
 
@@ -40,13 +40,12 @@ header{
 
 .produto-img{
   width:100%;
-  height:220px;
-  object-fit:cover;
+  height:240px;
   border-radius:16px;
 }
 
 .preco{
-  color:#5f00ff;
+  color:#6a00ff;
   font-weight:bold;
   font-size:18px;
 }
@@ -57,7 +56,7 @@ header{
 }
 
 button{
-  background:#5f00ff;
+  background:#6a00ff;
   color:white;
   border:none;
   padding:12px;
@@ -68,21 +67,15 @@ button{
   cursor:pointer;
 }
 
-button:hover{
-  background:#4500c7;
-}
-
-/* BOTÃO FLUTUANTE */
 #btnCarrinho{
   position:fixed;
   bottom:20px;
   right:20px;
-  background:#5f00ff;
+  background:#6a00ff;
   color:white;
   border-radius:50px;
   padding:15px 20px;
   font-size:16px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.2);
   cursor:pointer;
 }
 
@@ -94,7 +87,6 @@ button:hover{
   margin-left:5px;
 }
 
-/* CARRINHO LATERAL */
 #carrinho{
   position:fixed;
   top:0;
@@ -103,10 +95,10 @@ button:hover{
   max-width:400px;
   height:100%;
   background:white;
-  box-shadow:-4px 0 15px rgba(0,0,0,0.2);
   padding:20px;
   transition:0.4s;
   overflow:auto;
+  box-shadow:-4px 0 20px rgba(0,0,0,0.2);
 }
 
 #carrinho.ativo{
@@ -138,9 +130,25 @@ select, input{
 
 <div class="container">
 
-<!-- 300ML -->
+<!-- IMAGEM REALISTA SVG -->
 <div class="card">
-<img src="https://images.unsplash.com/photo-1625944193115-06d5f7cfc7b6?q=80&w=800&auto=format&fit=crop" class="produto-img">
+<img class="produto-img" src="data:image/svg+xml;utf8,
+<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'>
+<defs>
+<linearGradient id='g1' x1='0' y1='0' x2='0' y2='1'>
+<stop offset='0%' stop-color='%238b3fbf'/>
+<stop offset='100%' stop-color='%234b136e'/>
+</linearGradient>
+</defs>
+<rect width='100%' height='100%' fill='%23f3f3f3'/>
+<ellipse cx='200' cy='330' rx='80' ry='20' fill='rgba(0,0,0,0.2)'/>
+<rect x='130' y='80' width='140' height='240' rx='40' fill='url(%23g1)'/>
+<rect x='155' y='50' width='90' height='50' rx='15' fill='%23330055'/>
+<rect x='170' y='100' width='15' height='180' fill='rgba(255,255,255,0.2)'/>
+<text x='200' y='210' font-size='26' text-anchor='middle' fill='white' font-family='Arial'>AÇAÍ</text>
+<text x='200' y='240' font-size='22' text-anchor='middle' fill='white' font-family='Arial'>MSM</text>
+</svg>">
+
 <h3>300ml</h3>
 <div class="preco">R$ 14,00</div>
 
@@ -153,9 +161,24 @@ select, input{
 <button onclick="adicionarCarrinho('300ml',14,this)">Adicionar</button>
 </div>
 
-<!-- 500ML -->
 <div class="card">
-<img src="https://images.unsplash.com/photo-1625944193115-06d5f7cfc7b6?q=80&w=800&auto=format&fit=crop" class="produto-img">
+<img class="produto-img" src="data:image/svg+xml;utf8,
+<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'>
+<defs>
+<linearGradient id='g2' x1='0' y1='0' x2='0' y2='1'>
+<stop offset='0%' stop-color='%238b3fbf'/>
+<stop offset='100%' stop-color='%234b136e'/>
+</linearGradient>
+</defs>
+<rect width='100%' height='100%' fill='%23f3f3f3'/>
+<ellipse cx='200' cy='330' rx='80' ry='20' fill='rgba(0,0,0,0.2)'/>
+<rect x='130' y='80' width='140' height='240' rx='40' fill='url(%23g2)'/>
+<rect x='155' y='50' width='90' height='50' rx='15' fill='%23330055'/>
+<rect x='170' y='100' width='15' height='180' fill='rgba(255,255,255,0.2)'/>
+<text x='200' y='210' font-size='26' text-anchor='middle' fill='white' font-family='Arial'>AÇAÍ</text>
+<text x='200' y='240' font-size='22' text-anchor='middle' fill='white' font-family='Arial'>MSM</text>
+</svg>">
+
 <h3>500ml</h3>
 <div class="preco">R$ 18,00</div>
 
@@ -170,12 +193,10 @@ select, input{
 
 </div>
 
-<!-- BOTÃO CARRINHO -->
 <div id="btnCarrinho" onclick="abrirCarrinho()">
 🛒 Carrinho <span id="contador">0</span>
 </div>
 
-<!-- CARRINHO -->
 <div id="carrinho">
 <h3>Seu Pedido</h3>
 <div id="itens"></div>
@@ -183,7 +204,7 @@ select, input{
 <div class="total">Total: R$ <span id="total">0</span></div>
 
 <label>Entrega:</label>
-<select id="entrega" onchange="calcularTotal()">
+<select id="entrega">
 <option value="0">Retirada no local</option>
 <option value="4">Entrega Jardim Jacira (+4)</option>
 </select>
@@ -218,7 +239,6 @@ function adicionarCarrinho(nome, preco, botao){
 
   carrinho.push({nome, lista, totalItem});
   atualizarCarrinho();
-
   adicionais.forEach(a=>a.checked=false);
 }
 
@@ -229,6 +249,9 @@ function atualizarCarrinho(){
 
   carrinho.forEach(item=>{
     itensDiv.innerHTML += `<p>${item.nome} - R$${item.totalItem}</p>`;
+    if(item.lista.length){
+      itensDiv.innerHTML += `<small>Adicionais: ${item.lista.join(", ")}</small><br><br>`;
+    }
     total += item.totalItem;
   });
 
@@ -246,29 +269,18 @@ function mostrarTroco(){
   pagamento==="Dinheiro" ? "block" : "none";
 }
 
-function calcularTotal(){
-  atualizarCarrinho();
-}
-
 function enviarWhats(){
-  let total = document.getElementById("total").innerText;
+  let total = parseFloat(document.getElementById("total").innerText);
   let entrega = document.getElementById("entrega");
   let taxa = parseFloat(entrega.value);
   let tipoEntrega = entrega.options[entrega.selectedIndex].text;
   let pagamento = document.getElementById("pagamento").value;
   let troco = document.getElementById("troco").value;
 
-  let mensagem="🍇 *Pedido Açaí Batido MSM*%0A%0A";
+  let totalFinal = total + taxa;
 
-  carrinho.forEach(item=>{
-    mensagem += item.nome + " - R$" + item.totalItem + "%0A";
-    if(item.lista.length)
-      mensagem += "Adicionais: "+ item.lista.join(", ")+"%0A";
-    mensagem+="%0A";
-  });
-
-  let totalFinal = parseFloat(total) + taxa;
-
+  let mensagem="🍇 Pedido Açaí Batido MSM%0A%0A";
+  mensagem += document.getElementById("itens").innerText + "%0A";
   mensagem += "Entrega: "+ tipoEntrega +"%0A";
   mensagem += "Total: R$"+ totalFinal +"%0A";
   mensagem += "Pagamento: "+ pagamento +"%0A";
@@ -278,7 +290,6 @@ function enviarWhats(){
   }
 
   mensagem += "%0A📍 Rua Érico Veríssimo 159";
-  mensagem += "%0A🔑 Pix: 11943818352";
 
   window.open("https://wa.me/551194381832?text="+mensagem);
 }
