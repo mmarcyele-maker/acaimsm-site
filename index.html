@@ -19,17 +19,15 @@ header{background:linear-gradient(90deg,#6a00ff,#a100ff);color:#fff;padding:18px
 .adicional{display:flex;justify-content:space-between;align-items:center;margin:6px 0}
 .botao-add{background:linear-gradient(90deg,#6a00ff,#a100ff);color:#fff;border:none;padding:12px;width:100%;border-radius:10px;font-size:15px;cursor:pointer;margin-top:10px}
 
-/* Carrinho */
 #carrinhoIcon{position:fixed;bottom:20px;right:20px;background:#6a00ff;color:#fff;padding:15px;border-radius:50px;cursor:pointer;z-index:1000}
 #contador{background:red;border-radius:50%;padding:3px 7px;font-size:12px;margin-left:5px}
-#carrinhoBox{position:fixed;right:-100%;top:0;width:90%;height:100%;background:#fff;transition:.4s;padding:20px;overflow:auto;z-index:999}
-#carrinhoBox.ativo{right:0}
+#carrinhoBox, #adminBox{position:fixed;right:-100%;top:0;width:90%;height:100%;background:#fff;transition:.4s;padding:20px;overflow:auto;z-index:999}
+#carrinhoBox.ativo, #adminBox.ativo{right:0}
 .item-carrinho{border-bottom:1px solid #ddd;padding:8px 0}
-.remover{color:red;cursor:pointer;font-size:13px}
 .total{font-weight:bold;font-size:18px;margin-top:10px}
 input,select,textarea{width:100%;padding:10px;margin:6px 0 12px;border-radius:8px;border:1px solid #ccc}
 textarea{resize:none}
-.pixBox{background:#f4edff;padding:10px;border-radius:10px;margin-bottom:10px}
+button{cursor:pointer}
 </style>
 </head>
 
@@ -39,7 +37,7 @@ textarea{resize:none}
 
 <div class="container">
 
-<!-- AÇAÍ 300ML -->
+<!-- 300ml -->
 <div class="card" data-nome="Açaí 300ml" data-preco="14">
   <div class="card-conteudo">
     <img src="1770533878737.png">
@@ -54,39 +52,15 @@ textarea{resize:none}
     </div>
   </div>
 
-  <h4>Adicionais (R$ 2,00)</h4>
-
-  <div class="adicional" data-nome="Paçoca">
-    <span>Paçoca</span>
-    <div class="quantidade">
-      <button onclick="alterarQtd(this,-1)">−</button>
-      <span class="qtd">0</span>
-      <button onclick="alterarQtd(this,1)">+</button>
-    </div>
-  </div>
-
-  <div class="adicional" data-nome="Leite em pó">
-    <span>Leite em pó</span>
-    <div class="quantidade">
-      <button onclick="alterarQtd(this,-1)">−</button>
-      <span class="qtd">0</span>
-      <button onclick="alterarQtd(this,1)">+</button>
-    </div>
-  </div>
-
-  <div class="adicional" data-nome="Leite condensado">
-    <span>Leite condensado</span>
-    <div class="quantidade">
-      <button onclick="alterarQtd(this,-1)">−</button>
-      <span class="qtd">0</span>
-      <button onclick="alterarQtd(this,1)">+</button>
-    </div>
-  </div>
+  <h4>Adicionais (R$ 2,00 cada)</h4>
+  <div class="adicional" data-nome="Paçoca" data-preco="2"><span>Paçoca</span><div class="quantidade"><button onclick="alterarQtd(this,-1)">−</button><span class="qtd">0</span><button onclick="alterarQtd(this,1)">+</button></div></div>
+  <div class="adicional" data-nome="Leite em pó" data-preco="2"><span>Leite em pó</span><div class="quantidade"><button onclick="alterarQtd(this,-1)">−</button><span class="qtd">0</span><button onclick="alterarQtd(this,1)">+</button></div></div>
+  <div class="adicional" data-nome="Leite condensado" data-preco="2"><span>Leite condensado</span><div class="quantidade"><button onclick="alterarQtd(this,-1)">−</button><span class="qtd">0</span><button onclick="alterarQtd(this,1)">+</button></div></div>
 
   <button class="botao-add" onclick="adicionarCarrinho(this)">Adicionar</button>
 </div>
 
-<!-- AÇAÍ 500ML -->
+<!-- 500ml -->
 <div class="card" data-nome="Açaí 500ml" data-preco="18">
   <div class="card-conteudo">
     <img src="1770533878737.png">
@@ -101,188 +75,158 @@ textarea{resize:none}
     </div>
   </div>
 
-  <h4>Adicionais (R$ 2,00)</h4>
-
-  <div class="adicional" data-nome="Paçoca">
-    <span>Paçoca</span>
-    <div class="quantidade">
-      <button onclick="alterarQtd(this,-1)">−</button>
-      <span class="qtd">0</span>
-      <button onclick="alterarQtd(this,1)">+</button>
-    </div>
-  </div>
-
-  <div class="adicional" data-nome="Leite em pó">
-    <span>Leite em pó</span>
-    <div class="quantidade">
-      <button onclick="alterarQtd(this,-1)">−</button>
-      <span class="qtd">0</span>
-      <button onclick="alterarQtd(this,1)">+</button>
-    </div>
-  </div>
-
-  <div class="adicional" data-nome="Leite condensado">
-    <span>Leite condensado</span>
-    <div class="quantidade">
-      <button onclick="alterarQtd(this,-1)">−</button>
-      <span class="qtd">0</span>
-      <button onclick="alterarQtd(this,1)">+</button>
-    </div>
-  </div>
+  <h4>Adicionais (R$ 2,00 cada)</h4>
+  <div class="adicional" data-nome="Paçoca" data-preco="2"><span>Paçoca</span><div class="quantidade"><button onclick="alterarQtd(this,-1)">−</button><span class="qtd">0</span><button onclick="alterarQtd(this,1)">+</button></div></div>
+  <div class="adicional" data-nome="Leite em pó" data-preco="2"><span>Leite em pó</span><div class="quantidade"><button onclick="alterarQtd(this,-1)">−</button><span class="qtd">0</span><button onclick="alterarQtd(this,1)">+</button></div></div>
+  <div class="adicional" data-nome="Leite condensado" data-preco="2"><span>Leite condensado</span><div class="quantidade"><button onclick="alterarQtd(this,-1)">−</button><span class="qtd">0</span><button onclick="alterarQtd(this,1)">+</button></div></div>
 
   <button class="botao-add" onclick="adicionarCarrinho(this)">Adicionar</button>
 </div>
 
 </div>
 
-<!-- CARRINHO -->
+<!-- Carrinho -->
 <div id="carrinhoBox">
 <h2>Seu Pedido</h2>
-
 <input id="nomeCliente" placeholder="Nome">
-
 <select id="tipoEntrega">
   <option value="">Forma de entrega</option>
   <option value="retirada">Retirada grátis</option>
   <option value="jacira">Entrega Jardim Jacira (+R$4)</option>
 </select>
-
 <input id="enderecoCliente" placeholder="Endereço (se entrega)">
-
 <select id="pagamento">
   <option value="">Forma de pagamento</option>
   <option>Pix</option>
   <option>Dinheiro</option>
 </select>
-
-<div id="pixInfo" class="pixBox" style="display:none">
+<div id="pixInfo" style="display:none">
   <b>Pix:</b> 11984550595<br>
-  <b>Nome:</b> Marcyele da Silva Maciel<br><br>
-  <label>
-    <input type="checkbox" id="confirmouPix">
-    Já paguei no Pix e vou enviar o comprovante
-  </label>
+  <b>Nome:</b> Marcyele da Silva Maciel<br>
+  <label><input type="checkbox" id="confirmouPix"> Confirmei pagamento Pix</label>
 </div>
-
-<textarea id="obs" placeholder="Observações do pedido"></textarea>
-
+<textarea id="obs" placeholder="Observações"></textarea>
 <div id="lista"></div>
 <div class="total" id="totalDiv">Total: R$ 0,00</div>
-
-<button onclick="finalizar()">Finalizar no WhatsApp</button><br><br>
+<button onclick="finalizar()">Finalizar no WhatsApp</button>
+<br><br>
 <button onclick="fecharCarrinho()">Fechar</button>
+</div>
+
+<!-- Botão Admin -->
+<button onclick="abrirAdmin()" style="position:fixed;bottom:80px;right:20px;padding:10px 15px;background:#6a00ff;color:#fff;border-radius:10px;z-index:1000;">Admin</button>
+
+<!-- Admin -->
+<div id="adminBox">
+<h2>Painel Admin</h2>
+<div id="adminPedidos"></div>
+<div class="total" id="totalFaturado"></div>
+<button onclick="limparPedidos()">Limpar pedidos</button>
+<br><br>
+<button onclick="fecharAdmin()">Fechar</button>
 </div>
 
 <div id="carrinhoIcon" onclick="abrirCarrinho()">🛒 <span id="contador">0</span></div>
 
 <script>
-let itensCarrinho = [];
-let total = 0;
-let taxaEntrega = 0;
-
-const carrinhoBox = document.getElementById("carrinhoBox");
-const contador = document.getElementById("contador");
+let carrinho=[], total=0, taxaEntrega=0, pedidosSalvos=[];
 
 function alterarQtd(btn,v){
-  let s = btn.parentElement.querySelector(".qtd");
-  s.innerText = Math.max(0, parseInt(s.innerText) + v);
+  let s=btn.parentElement.querySelector(".qtd");
+  s.innerText=Math.max(0,parseInt(s.innerText)+v);
 }
 
-function adicionarCarrinho(botao){
-  let card = botao.closest(".card");
-  let nome = card.dataset.nome;
-  let preco = +card.dataset.preco;
-  let qtd = +card.querySelector(".card-info .qtd").innerText;
+function adicionarCarrinho(btn){
+  let card=btn.closest(".card");
+  let nome=card.dataset.nome;
+  let preco=+card.dataset.preco;
+  let qtd=+card.querySelector(".card-info .qtd").innerText;
   if(!qtd) return;
 
-  let adicionais = [];
-  let sub = qtd * preco;
-
+  let adicionais=[], sub=qtd*preco;
   card.querySelectorAll(".adicional").forEach(a=>{
-    let q = +a.querySelector(".qtd").innerText;
+    let q=+a.querySelector(".qtd").innerText;
+    let p=+a.dataset.preco;
     if(q){
-      let totalAdd = q * qtd;
-      sub += totalAdd * 2;
-      adicionais.push(`${a.dataset.nome} x${totalAdd}`);
-      a.querySelector(".qtd").innerText = 0;
+      let valor=q*p;
+      sub+=valor;
+      adicionais.push(`${a.dataset.nome} x${q} (R$ ${valor.toFixed(2)})`);
+      a.querySelector(".qtd").innerText=0;
     }
   });
 
-  itensCarrinho.push({nome,qtd,adicionais,sub});
-  total += sub;
-  card.querySelector(".card-info .qtd").innerText = 1;
-  atualizar();
+  carrinho.push({nome,qtd,adicionais,sub});
+  total+=sub;
+  card.querySelector(".card-info .qtd").innerText=1;
+  atualizarCarrinho();
 }
 
-function atualizar(){
-  let lista = document.getElementById("lista");
-  lista.innerHTML = "";
-  let itens = 0;
-
-  itensCarrinho.forEach((i,n)=>{
-    itens += i.qtd;
-    lista.innerHTML += `
-      <div class="item-carrinho">
-        <b>${i.nome} x${i.qtd}</b><br>
-        ${i.adicionais.length ? "➕ "+i.adicionais.join(", ")+"<br>" : ""}
-        Subtotal: R$ ${i.sub.toFixed(2)}<br>
-        <span class="remover" onclick="remover(${n})">Remover</span>
-      </div>`;
+function atualizarCarrinho(){
+  let lista=document.getElementById("lista");
+  lista.innerHTML="";
+  let itens=0;
+  carrinho.forEach((i,n)=>{
+    itens+=i.qtd;
+    lista.innerHTML+=`<div class="item-carrinho"><b>${i.nome} x${i.qtd}</b><br>${i.adicionais.length?"➕ "+i.adicionais.join("<br>"):""}<br>Subtotal: R$ ${i.sub.toFixed(2)}<br></div>`;
   });
-
-  contador.innerText = itens;
-  document.getElementById("totalDiv").innerText =
-    "Total: R$ " + (total + taxaEntrega).toFixed(2);
+  document.getElementById("contador").innerText=itens;
+  document.getElementById("totalDiv").innerText="Total: R$ "+(total+taxaEntrega).toFixed(2);
 }
 
-function remover(i){
-  total -= itensCarrinho[i].sub;
-  itensCarrinho.splice(i,1);
-  atualizar();
-}
+function abrirCarrinho(){ atualizarCarrinho(); document.getElementById("carrinhoBox").classList.add("ativo"); }
+function fecharCarrinho(){ document.getElementById("carrinhoBox").classList.remove("ativo"); }
 
-function abrirCarrinho(){ atualizar(); carrinhoBox.classList.add("ativo"); }
-function fecharCarrinho(){ carrinhoBox.classList.remove("ativo"); }
-
-document.getElementById("tipoEntrega").onchange = e=>{
-  taxaEntrega = e.target.value==="jacira" ? 4 : 0;
-  atualizar();
-};
-
-document.getElementById("pagamento").onchange = ()=>{
-  document.getElementById("pixInfo").style.display =
-    pagamento.value==="Pix" ? "block" : "none";
-};
+document.getElementById("tipoEntrega").onchange=e=>{ taxaEntrega=e.target.value==="jacira"?4:0; atualizarCarrinho(); }
+document.getElementById("pagamento").onchange=()=>{ document.getElementById("pixInfo").style.display=pagamento.value==="Pix"?"block":"none"; }
 
 function finalizar(){
-  if(!nomeCliente.value || !tipoEntrega.value || !pagamento.value){
-    alert("Preencha os dados obrigatórios");
-    return;
-  }
-  if(pagamento.value==="Pix" && !confirmouPix.checked){
-    alert("Confirme o pagamento Pix");
-    return;
-  }
+  if(!nomeCliente.value||!tipoEntrega.value||!pagamento.value){alert("Preencha os dados obrigatórios"); return;}
+  if(pagamento.value==="Pix"&&!confirmouPix.checked){alert("Confirme o pagamento Pix"); return;}
 
-  let msg=`🍧 *Pedido Açaí MSM*%0A👤 ${nomeCliente.value}%0A`;
-  msg+= tipoEntrega.value==="retirada"
-    ? `📍 Retirada: Rua Érico Veríssimo 159%0A`
-    : `🚚 Entrega Jardim Jacira (+R$4)%0A`;
+  let pedido={nome:nomeCliente.value,tipoEntrega:tipoEntrega.value,endereco:enderecoCliente.value,pagamento:pagamento.value,obs:obs.value,itens:carrinho.slice(),taxaEntrega:taxaEntrega,total:total+taxaEntrega};
+  pedidosSalvos.push(pedido);
+  localStorage.setItem("pedidosSalvos",JSON.stringify(pedidosSalvos));
 
-  msg+=`%0A🧾 Itens:%0A`;
-  itensCarrinho.forEach(i=>{
-    msg+=`• ${i.nome} x${i.qtd} – R$ ${i.sub.toFixed(2)}%0A`;
-    if(i.adicionais.length) msg+=`  ➕ ${i.adicionais.join(", ")}%0A`;
+  let msg=`🍧 Pedido Açaí MSM\nCliente: ${nomeCliente.value}\n`;
+  msg+=tipoEntrega.value==="retirada"?`📍 Retirada: Rua Érico Veríssimo 159\n`:`🚚 Entrega Jardim Jacira (+R$4)\n`;
+  msg+="\n🧾 Itens:\n";
+  carrinho.forEach(i=>{
+    msg+=`• ${i.nome} x${i.qtd} – R$ ${i.sub.toFixed(2)}\n`;
+    if(i.adicionais.length) msg+=`  ➕ ${i.adicionais.join("\n")}\n`;
   });
+  if(obs.value) msg+="\nObs: "+obs.value;
+  if(pagamento.value==="Pix") msg+="\nEnvie o comprovante do Pix";
 
-  if(obs.value) msg+=`%0A📝 Obs: ${obs.value}%0A`;
-  if(pagamento.value==="Pix") msg+=`%0A📎 Envie o comprovante do Pix aqui`;
+  msg+=`\n💳 Pagamento: ${pagamento.value}`;
+  msg+=`\n💰 Total: R$ ${(total+taxaEntrega).toFixed(2)}`;
 
-  msg+=`%0A💳 Pagamento: ${pagamento.value}`;
-  msg+=`%0A💰 Total: R$ ${(total+taxaEntrega).toFixed(2)}`;
-
-  window.open("https://wa.me/5511943818352?text="+msg);
+  carrinho=[]; total=0; atualizarCarrinho();
+  window.open("https://wa.me/5511943818352?text="+encodeURIComponent(msg));
 }
+
+// Admin com senha
+const senhaAdmin = "msm2026"; // altere aqui sua senha
+function abrirAdmin(){
+  let s = prompt("Digite a senha do Admin:");
+  if(s !== senhaAdmin){ alert("Senha incorreta"); return; }
+
+  pedidosSalvos=JSON.parse(localStorage.getItem("pedidosSalvos"))||[];
+  let html="";
+  let totalF=0;
+  pedidosSalvos.forEach((p,i)=>{
+    html+=`<div style="border-bottom:1px solid #ccc;padding:5px"><b>${p.nome}</b> (${p.pagamento})<br>`;
+    html+=`Entrega: ${p.tipoEntrega==="retirada"?"Retirada":"Jardim Jacira"}<br>`;
+    p.itens.forEach(it=>{ html+=`• ${it.nome} x${it.qtd} ${it.adicionais.length?"➕ "+it.adicionais.join(","):""} – R$ ${it.sub.toFixed(2)}<br>` });
+    html+=`Taxa: R$ ${p.taxaEntrega}<br>`;
+    html+=`Total: R$ ${p.total.toFixed(2)}<br></div>`;
+    totalF+=p.total;
+  });
+  document.getElementById("adminPedidos").innerHTML=html;
+  document.getElementById("totalFaturado").innerText="Total faturado: R$ "+totalF.toFixed(2);
+  document.getElementById("adminBox").classList.add("ativo");
+}
+function fecharAdmin(){ document.getElementById("adminBox").classList.remove("ativo"); }
+function limparPedidos(){ if(confirm("Limpar todos os pedidos?")){localStorage.removeItem("pedidosSalvos"); pedidosSalvos=[]; abrirAdmin(); } }
 </script>
 
 </body>
