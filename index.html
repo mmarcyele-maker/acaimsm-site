@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Açaí Batido MSM</title>
-
 <style>
 body{margin:0;font-family:Arial,sans-serif;background:#f2f2f2}
 header{background:linear-gradient(90deg,#6a00ff,#a100ff);color:#fff;padding:18px;text-align:center;font-size:22px;font-weight:bold}
@@ -21,13 +20,14 @@ header{background:linear-gradient(90deg,#6a00ff,#a100ff);color:#fff;padding:18px
 
 #carrinhoIcon{position:fixed;bottom:20px;right:20px;background:#6a00ff;color:#fff;padding:15px;border-radius:50px;cursor:pointer;z-index:1000}
 #contador{background:red;border-radius:50%;padding:3px 7px;font-size:12px;margin-left:5px}
-#carrinhoBox, #adminBox{position:fixed;right:-100%;top:0;width:90%;height:100%;background:#fff;transition:.4s;padding:20px;overflow:auto;z-index:999}
-#carrinhoBox.ativo, #adminBox.ativo{right:0}
+#carrinhoBox,#adminBox{position:fixed;right:-100%;top:0;width:90%;height:100%;background:#fff;transition:.4s;padding:20px;overflow:auto;z-index:999}
+#carrinhoBox.ativo,#adminBox.ativo{right:0}
 .item-carrinho{border-bottom:1px solid #ddd;padding:8px 0}
 .total{font-weight:bold;font-size:18px;margin-top:10px}
 input,select,textarea{width:100%;padding:10px;margin:6px 0 12px;border-radius:8px;border:1px solid #ccc}
 textarea{resize:none}
 button{cursor:pointer}
+#adminBtn{display:block;margin:30px auto;padding:10px 15px;background:#6a00ff;color:#fff;border-radius:10px;width:200px;text-align:center;}
 </style>
 </head>
 
@@ -37,7 +37,7 @@ button{cursor:pointer}
 
 <div class="container">
 
-<!-- 300ml -->
+<!-- PRODUTOS -->
 <div class="card" data-nome="Açaí 300ml" data-preco="14">
   <div class="card-conteudo">
     <img src="1770533878737.png">
@@ -51,16 +51,28 @@ button{cursor:pointer}
       </div>
     </div>
   </div>
-
-  <h4>Adicionais (R$ 2,00 cada)</h4>
-  <div class="adicional" data-nome="Paçoca" data-preco="2"><span>Paçoca</span><div class="quantidade"><button onclick="alterarQtd(this,-1)">−</button><span class="qtd">0</span><button onclick="alterarQtd(this,1)">+</button></div></div>
-  <div class="adicional" data-nome="Leite em pó" data-preco="2"><span>Leite em pó</span><div class="quantidade"><button onclick="alterarQtd(this,-1)">−</button><span class="qtd">0</span><button onclick="alterarQtd(this,1)">+</button></div></div>
-  <div class="adicional" data-nome="Leite condensado" data-preco="2"><span>Leite condensado</span><div class="quantidade"><button onclick="alterarQtd(this,-1)">−</button><span class="qtd">0</span><button onclick="alterarQtd(this,1)">+</button></div></div>
-
+  <h4>Adicionais</h4>
+  <div class="adicional" data-nome="Paçoca" data-preco="2">
+    <span>Paçoca R$2,00</span>
+    <div class="quantidade">
+      <button onclick="alterarQtd(this,-1)">−</button><span class="qtd">0</span><button onclick="alterarQtd(this,1)">+</button>
+    </div>
+  </div>
+  <div class="adicional" data-nome="Leite em pó" data-preco="2">
+    <span>Leite em pó R$2,00</span>
+    <div class="quantidade">
+      <button onclick="alterarQtd(this,-1)">−</button><span class="qtd">0</span><button onclick="alterarQtd(this,1)">+</button>
+    </div>
+  </div>
+  <div class="adicional" data-nome="Leite condensado" data-preco="2">
+    <span>Leite condensado R$2,00</span>
+    <div class="quantidade">
+      <button onclick="alterarQtd(this,-1)">−</button><span class="qtd">0</span><button onclick="alterarQtd(this,1)">+</button>
+    </div>
+  </div>
   <button class="botao-add" onclick="adicionarCarrinho(this)">Adicionar</button>
 </div>
 
-<!-- 500ml -->
 <div class="card" data-nome="Açaí 500ml" data-preco="18">
   <div class="card-conteudo">
     <img src="1770533878737.png">
@@ -74,18 +86,31 @@ button{cursor:pointer}
       </div>
     </div>
   </div>
-
-  <h4>Adicionais (R$ 2,00 cada)</h4>
-  <div class="adicional" data-nome="Paçoca" data-preco="2"><span>Paçoca</span><div class="quantidade"><button onclick="alterarQtd(this,-1)">−</button><span class="qtd">0</span><button onclick="alterarQtd(this,1)">+</button></div></div>
-  <div class="adicional" data-nome="Leite em pó" data-preco="2"><span>Leite em pó</span><div class="quantidade"><button onclick="alterarQtd(this,-1)">−</button><span class="qtd">0</span><button onclick="alterarQtd(this,1)">+</button></div></div>
-  <div class="adicional" data-nome="Leite condensado" data-preco="2"><span>Leite condensado</span><div class="quantidade"><button onclick="alterarQtd(this,-1)">−</button><span class="qtd">0</span><button onclick="alterarQtd(this,1)">+</button></div></div>
-
+  <h4>Adicionais</h4>
+  <div class="adicional" data-nome="Paçoca" data-preco="2">
+    <span>Paçoca R$2,00</span>
+    <div class="quantidade">
+      <button onclick="alterarQtd(this,-1)">−</button><span class="qtd">0</span><button onclick="alterarQtd(this,1)">+</button>
+    </div>
+  </div>
+  <div class="adicional" data-nome="Leite em pó" data-preco="2">
+    <span>Leite em pó R$2,00</span>
+    <div class="quantidade">
+      <button onclick="alterarQtd(this,-1)">−</button><span class="qtd">0</span><button onclick="alterarQtd(this,1)">+</button>
+    </div>
+  </div>
+  <div class="adicional" data-nome="Leite condensado" data-preco="2">
+    <span>Leite condensado R$2,00</span>
+    <div class="quantidade">
+      <button onclick="alterarQtd(this,-1)">−</button><span class="qtd">0</span><button onclick="alterarQtd(this,1)">+</button>
+    </div>
+  </div>
   <button class="botao-add" onclick="adicionarCarrinho(this)">Adicionar</button>
 </div>
 
 </div>
 
-<!-- Carrinho -->
+<!-- CARRINHO -->
 <div id="carrinhoBox">
 <h2>Seu Pedido</h2>
 <input id="nomeCliente" placeholder="Nome">
@@ -113,10 +138,10 @@ button{cursor:pointer}
 <button onclick="fecharCarrinho()">Fechar</button>
 </div>
 
-<!-- Botão Admin -->
-<button onclick="abrirAdmin()" style="position:fixed;bottom:80px;right:20px;padding:10px 15px;background:#6a00ff;color:#fff;border-radius:10px;z-index:1000;">Admin</button>
+<!-- Botão Admin no final -->
+<button id="adminBtn" onclick="abrirAdmin()">Admin</button>
 
-<!-- Admin -->
+<!-- ADMIN -->
 <div id="adminBox">
 <h2>Painel Admin</h2>
 <div id="adminPedidos"></div>
@@ -150,7 +175,7 @@ function adicionarCarrinho(btn){
     if(q){
       let valor=q*p;
       sub+=valor;
-      adicionais.push(`${a.dataset.nome} x${q} (R$ ${valor.toFixed(2)})`);
+      adicionais.push(`${a.dataset.nome} R$${p.toFixed(2)} x${q} = R$${valor.toFixed(2)}`);
       a.querySelector(".qtd").innerText=0;
     }
   });
@@ -165,9 +190,9 @@ function atualizarCarrinho(){
   let lista=document.getElementById("lista");
   lista.innerHTML="";
   let itens=0;
-  carrinho.forEach((i,n)=>{
+  carrinho.forEach(i=>{
     itens+=i.qtd;
-    lista.innerHTML+=`<div class="item-carrinho"><b>${i.nome} x${i.qtd}</b><br>${i.adicionais.length?"➕ "+i.adicionais.join("<br>"):""}<br>Subtotal: R$ ${i.sub.toFixed(2)}<br></div>`;
+    lista.innerHTML+=`<div class="item-carrinho"><b>${i.nome} x${i.qtd}</b><br>${i.adicionais.length?"➕ "+i.adicionais.join("<br>"):""}<br>Subtotal: R$ ${i.sub.toFixed(2)}</div>`;
   });
   document.getElementById("contador").innerText=itens;
   document.getElementById("totalDiv").innerText="Total: R$ "+(total+taxaEntrega).toFixed(2);
@@ -204,16 +229,14 @@ function finalizar(){
   window.open("https://wa.me/5511943818352?text="+encodeURIComponent(msg));
 }
 
-// Admin com senha
-const senhaAdmin = "msm2026"; // altere aqui sua senha
+// ADMIN
+const senhaAdmin = "msm2026";
 function abrirAdmin(){
   let s = prompt("Digite a senha do Admin:");
-  if(s !== senhaAdmin){ alert("Senha incorreta"); return; }
-
+  if(s!==senhaAdmin){alert("Senha incorreta"); return;}
   pedidosSalvos=JSON.parse(localStorage.getItem("pedidosSalvos"))||[];
-  let html="";
-  let totalF=0;
-  pedidosSalvos.forEach((p,i)=>{
+  let html="", totalF=0;
+  pedidosSalvos.forEach(p=>{
     html+=`<div style="border-bottom:1px solid #ccc;padding:5px"><b>${p.nome}</b> (${p.pagamento})<br>`;
     html+=`Entrega: ${p.tipoEntrega==="retirada"?"Retirada":"Jardim Jacira"}<br>`;
     p.itens.forEach(it=>{ html+=`• ${it.nome} x${it.qtd} ${it.adicionais.length?"➕ "+it.adicionais.join(","):""} – R$ ${it.sub.toFixed(2)}<br>` });
@@ -227,6 +250,7 @@ function abrirAdmin(){
 }
 function fecharAdmin(){ document.getElementById("adminBox").classList.remove("ativo"); }
 function limparPedidos(){ if(confirm("Limpar todos os pedidos?")){localStorage.removeItem("pedidosSalvos"); pedidosSalvos=[]; abrirAdmin(); } }
+
 </script>
 
 </body>
