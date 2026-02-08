@@ -196,6 +196,46 @@ input{
   <button class="botao-add" onclick="adicionarCarrinho(this)">Adicionar</button>
 </div>
 
+<!-- PRODUTO -->
+<div class="card" data-nome="500ml" data-preco="14">
+  <div class="card-conteudo">
+    <img src="./1770533878737.png">
+    <div class="card-info">
+      <h3>500ml</h3>
+      <div class="preco">R$ 18,00</div>
+
+      <div class="quantidade">
+        <button onclick="alterarQtd(this,-1)">−</button>
+        <span class="qtd">1</span>
+        <button onclick="alterarQtd(this,1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <h4>Adicionais</h4>
+
+  <div class="adicional" data-nome="Paçoca" data-preco="2">
+    <span>Paçoca R$2,00</span>
+    <div class="quantidade">
+      <button onclick="alterarQtd(this,-1)">−</button>
+      <span class="qtd">0</span>
+      <button onclick="alterarQtd(this,1)">+</button>
+    </div>
+  </div>
+
+  <div class="adicional" data-nome="Leite em pó" data-preco="3">
+    <span>Leite em pó R$3,00</span>
+    <div class="quantidade">
+      <button onclick="alterarQtd(this,-1)">−</button>
+      <span class="qtd">0</span>
+      <button onclick="alterarQtd(this,1)">+</button>
+    </div>
+  </div>
+
+  <button class="botao-add" onclick="adicionarCarrinho(this)">Adicionar</button>
+</div>
+
+  
 </div>
 
 <!-- CARRINHO -->
