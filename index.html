@@ -22,7 +22,7 @@ header{background:linear-gradient(90deg,#6a00ff,#a100ff);color:#fff;padding:18px
 /* Carrinho */
 #carrinhoIcon{position:fixed;bottom:20px;right:20px;background:#6a00ff;color:#fff;padding:15px;border-radius:50px;cursor:pointer}
 #contador{background:red;border-radius:50%;padding:3px 7px;font-size:12px;margin-left:5px}
-#carrinho{position:fixed;right:-100%;top:0;width:90%;height:100%;background:#fff;transition:.4s;padding:20px;overflow:auto;z-index:999}
+#carrinho{position:fixed;right:-100%;top:0;width:90%;height:100%;background:#fff;transition:.4s;padding:20px;overflow:auto}
 #carrinho.ativo{right:0}
 .item-carrinho{border-bottom:1px solid #ddd;padding:8px 0}
 .remover{color:red;cursor:pointer;font-size:13px}
@@ -169,104 +169,109 @@ textarea{resize:none}
 let carrinho = [];
 let total = 0;
 let taxaEntrega = 0;
-let carrinhoBox = document.getElementById("carrinho");
 
-function alterarQtd(btn,v){
-  let s=btn.parentElement.querySelector(".qtd");
-  let n=parseInt(s.innerText)+v;
-  if(n<0)n=0;
-  s.innerText=n;
+function alterarQtd(btn, v){
+  let s = btn.parentElement.querySelector(".qtd");
+  let n = parseInt(s.innerText) + v;
+  if(n < 0) n = 0;
+  s.innerText = n;
 }
 
 function adicionarCarrinho(b){
-  let c=b.closest(".card");
-  let nome=c.dataset.nome;
-  let preco=+c.dataset.preco;
-  let qtd=+c.querySelector(".card-info .qtd").innerText;
-  if(!qtd)return;
+  let c = b.closest(".card");
+  let nome = c.dataset.nome;
+  let preco = parseFloat(c.dataset.preco);
+  let qtd = parseInt(c.querySelector(".card-info .qtd").innerText);
+  if(!qtd) return;
 
-  let adicionais=[], sub=qtd*preco;
+  let adicionais = [];
+  let sub = qtd * preco;
 
   c.querySelectorAll(".adicional").forEach(a=>{
-    let q=+a.querySelector(".qtd").innerText;
-    let p=+a.dataset.preco;
-    if(q){
-      let totalAdd=q*qtd;
-      sub+=totalAdd*p;
+    let q = parseInt(a.querySelector(".qtd").innerText);
+    let p = parseFloat(a.dataset.preco);
+    if(q > 0){
+      let totalAdd = q * qtd;
+      sub += totalAdd * p;
       adicionais.push(`${a.dataset.nome} x${totalAdd}`);
-      a.querySelector(".qtd").innerText=0;
+      a.querySelector(".qtd").innerText = 0;
     }
   });
 
-  carrinho.push({nome,qtd,adicionais,sub});
-  total+=sub;
-  c.querySelector(".card-info .qtd").innerText=1;
+  carrinho.push({nome, qtd, adicionais, sub});
+  total += sub;
+  c.querySelector(".card-info .qtd").innerText = 1;
   atualizar();
 }
 
 function atualizar(){
-  let l=document.getElementById("lista");
-  l.innerHTML="";
-  let itens=0;
+  let l = document.getElementById("lista");
+  l.innerHTML = "";
+  let itens = 0;
+
   carrinho.forEach((i,n)=>{
-    itens+=i.qtd;
-    l.innerHTML+=`
+    itens += i.qtd;
+    l.innerHTML += `
       <div class="item-carrinho">
         <b>${i.nome} x${i.qtd}</b><br>
-        ${i.adicionais.length? "Adicionais: "+i.adicionais.join(", ")+"<br>":""}
+        ${i.adicionais.length ? "Adicionais: "+i.adicionais.join(", ")+"<br>" : ""}
         R$ ${i.sub.toFixed(2)}<br>
         <span class="remover" onclick="remover(${n})">Remover</span>
-      </div>`;
+      </div>
+    `;
   });
-  contador.innerText=itens;
-  totalDiv.innerText="Total: R$ "+(total+taxaEntrega).toFixed(2);
+
+  document.getElementById("contador").innerText = itens;
+  document.getElementById("total").innerText =
+    "Total: R$ " + (total + taxaEntrega).toFixed(2);
 }
 
 function remover(i){
-  total-=carrinho[i].sub;
+  total -= carrinho[i].sub;
   carrinho.splice(i,1);
   atualizar();
 }
 
-function abrirCarrinho(){
-  atualizar();
-  carrinhoBox.classList.add("ativo");
-}
+function abrirCarrinho(){ atualizar(); carrinho.classList.add("ativo"); }
+function fecharCarrinho(){ carrinho.classList.remove("ativo"); }
 
-function fecharCarrinho(){
-  carrinhoBox.classList.remove("ativo");
-}
-
-tipoEntrega.addEventListener("change",()=>{
-  taxaEntrega = tipoEntrega.value==="jacira"?4:0;
+document.getElementById("tipoEntrega").addEventListener("change", function(){
+  taxaEntrega = this.value === "jacira" ? 4 : 0;
   atualizar();
 });
 
 function finalizar(){
-  if(!nomeCliente.value||!tipoEntrega.value||!pagamento.value){
+  let nome = nomeCliente.value.trim();
+  let endereco = enderecoCliente.value.trim();
+  let entrega = tipoEntrega.value;
+  let pag = pagamento.value;
+
+  if(!nome || !entrega || !pag){
     alert("Preencha nome, entrega e pagamento");
     return;
   }
 
-  let msg=`🍧 *Pedido Açaí MSM*%0A👤 Cliente: ${nomeCliente.value}%0A`;
+  let msg = `🍧 *Pedido Açaí MSM*%0A%0A👤 Cliente: ${nome}%0A`;
 
-  if(tipoEntrega.value==="retirada"){
-    msg+=`📍 Retirada: Rua Érico Veríssimo 159%0A`;
-  }else{
-    msg+=`🏠 Endereço: ${enderecoCliente.value}%0A🚚 Entrega Jardim Jacira: R$ 4,00%0A`;
+  if(entrega === "retirada"){
+    msg += `📍 Retirada: Rua Érico Veríssimo 159%0A`;
+  } else {
+    msg += `🏠 Endereço: ${endereco}%0A🚚 Entrega Jardim Jacira: R$ 4,00%0A`;
   }
 
-  msg+=`%0A🧾 *Itens:*%0A`;
+  msg += `%0A🧾 *Itens:*%0A`;
   carrinho.forEach(i=>{
-    msg+=`• ${i.nome} x${i.qtd} – R$ ${i.sub.toFixed(2)}%0A`;
-    if(i.adicionais.length) msg+=`  ➕ ${i.adicionais.join(", ")}%0A`;
+    msg += `• ${i.nome} x${i.qtd} – R$ ${i.sub.toFixed(2)}%0A`;
+    if(i.adicionais.length){
+      msg += `  ➕ ${i.adicionais.join(", ")}%0A`;
+    }
   });
 
-  if(obs.value) msg+=`%0A📝 Obs: ${obs.value}%0A`;
-  if(pagamento.value==="Dinheiro"&&troco.value) msg+=`💵 Troco para: ${troco.value}%0A`;
+  if(obs.value) msg += `%0A📝 Obs: ${obs.value}%0A`;
+  if(pag==="Dinheiro" && troco.value) msg += `💵 Troco para: ${troco.value}%0A`;
 
-  msg+=`%0A💳 Pagamento: ${pagamento.value}%0A`;
-  msg+=`💰 *Total: R$ ${(total+taxaEntrega).toFixed(2)}*`;
+  msg += `%0A💳 Pagamento: ${pag}%0A`;
+  msg += `💰 *Total: R$ ${(total + taxaEntrega).toFixed(2)}*`;
 
   window.open("https://wa.me/5511943818352?text="+msg);
 }
