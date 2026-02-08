@@ -7,191 +7,199 @@
 
 <style>
 body{
-margin:0;
-font-family:Arial, sans-serif;
-background:#f2f2f2;
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f5f5f5;
 }
 
 header{
-background:linear-gradient(90deg,#5e0ba8,#8e2de2);
-color:white;
-padding:20px;
-text-align:center;
-font-size:22px;
-font-weight:bold;
+    background:linear-gradient(90deg,#6a0dad,#8a2be2);
+    color:white;
+    padding:20px;
+    text-align:center;
+    font-size:24px;
+    font-weight:bold;
 }
 
 .container{
-padding:15px;
-}
-
-.box{
-background:white;
-padding:15px;
-border-radius:15px;
-margin-bottom:20px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    padding:15px;
 }
 
 .card{
-background:white;
-border-radius:15px;
-padding:15px;
-margin-bottom:20px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    background:white;
+    border-radius:15px;
+    padding:15px;
+    margin-bottom:20px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.1);
 }
 
 .card img{
-width:100%;
-border-radius:15px;
-height:230px;
-object-fit:cover;
+    width:100%;
+    border-radius:15px;
 }
 
 .price{
-color:#7b1fa2;
-font-size:20px;
-font-weight:bold;
-margin:10px 0;
+    color:#6a0dad;
+    font-size:20px;
+    font-weight:bold;
+    margin:10px 0;
 }
 
-label{
-display:block;
-margin-bottom:6px;
-}
-
-select, input{
-width:100%;
-padding:8px;
-border-radius:8px;
-border:1px solid #ccc;
-margin-top:5px;
+.adicionais label{
+    display:block;
+    margin:5px 0;
 }
 
 button{
-background:linear-gradient(90deg,#5e0ba8,#8e2de2);
-color:white;
-border:none;
-padding:12px;
-border-radius:25px;
-width:100%;
-font-size:16px;
-margin-top:10px;
-cursor:pointer;
+    background:#6a0dad;
+    color:white;
+    border:none;
+    padding:12px;
+    border-radius:10px;
+    width:100%;
+    font-size:16px;
+    cursor:pointer;
+    margin-top:10px;
 }
 
 button:hover{
-opacity:0.9;
+    background:#8a2be2;
+}
+
+.pagamento, .entrega{
+    background:white;
+    padding:15px;
+    border-radius:15px;
+    margin-bottom:20px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.1);
 }
 </style>
 </head>
 
 <body>
 
-<header>AÇAÍ BATIDO</header>
+<header>🍇 Açaí Batido</header>
 
 <div class="container">
 
-<div class="box">
+<div class="entrega">
 <strong>Forma de recebimento:</strong><br><br>
 
 <label>
 <input type="radio" name="recebimento" value="Retirada" checked>
-Retirada no local  
-<br><small>Rua Érico Veríssimo 159</small>
+Retirada no local<br>
+<small>Rua Érico Veríssimo 159</small>
 </label>
 
 <br>
 
 <label>
 <input type="radio" name="recebimento" value="Entrega">
-Entrega (Somente Jardim Jacira + R$4,00)
+Entrega (Somente Jardim Jacira + R$ 4,00)
 </label>
 </div>
 
 <!-- 300ML -->
 <div class="card">
-<img src="https://images.unsplash.com/photo-1612197528639-6a3e1a0b9f47?auto=format&fit=crop&w=800&q=80">
+<img src="https://images.pexels.com/photos/5946623/pexels-photo-5946623.jpeg?auto=compress&cs=tinysrgb&w=800">
 
 <h3>300ml</h3>
-<div class="price">R$14,00</div>
+<div class="price">R$ 14,00</div>
 
 <strong>Adicionais:</strong>
+<div class="adicionais">
+<label><input type="checkbox" value="Paçoca"> Paçoca + R$ 2,00</label>
+<label><input type="checkbox" value="Leite em pó"> Leite em pó + R$ 3,00</label>
+<label><input type="checkbox" value="Leite condensado"> Leite condensado + R$ 2,00</label>
+</div>
 
-<label><input type="checkbox" value="Paçoca" data-preco="2"> Paçoca (+R$2,00)</label>
-<label><input type="checkbox" value="Leite em pó" data-preco="3"> Leite em pó (+R$3,00)</label>
-<label><input type="checkbox" value="Leite condensado" data-preco="2"> Leite condensado (+R$2,00)</label>
-
-<button onclick="enviarPedido('300ml',14,this)">Pedir pelo WhatsApp</button>
+<button onclick="enviarPedido('300ml',14)">Pedir pelo WhatsApp</button>
 </div>
 
 <!-- 500ML -->
 <div class="card">
-<img src="https://images.unsplash.com/photo-1612197528639-6a3e1a0b9f47?auto=format&fit=crop&w=800&q=80">
+<img src="https://images.pexels.com/photos/5946623/pexels-photo-5946623.jpeg?auto=compress&cs=tinysrgb&w=800">
 
 <h3>500ml</h3>
-<div class="price">R$18,00</div>
+<div class="price">R$ 18,00</div>
 
 <strong>Adicionais:</strong>
+<div class="adicionais">
+<label><input type="checkbox" value="Paçoca"> Paçoca + R$ 2,00</label>
+<label><input type="checkbox" value="Leite em pó"> Leite em pó + R$ 3,00</label>
+<label><input type="checkbox" value="Leite condensado"> Leite condensado + R$ 2,00</label>
+</div>
 
-<label><input type="checkbox" value="Paçoca" data-preco="2"> Paçoca (+R$2,00)</label>
-<label><input type="checkbox" value="Leite em pó" data-preco="3"> Leite em pó (+R$3,00)</label>
-<label><input type="checkbox" value="Leite condensado" data-preco="2"> Leite condensado (+R$2,00)</label>
+<button onclick="enviarPedido('500ml',18)">Pedir pelo WhatsApp</button>
+</div>
 
-<button onclick="enviarPedido('500ml',18,this)">Pedir pelo WhatsApp</button>
+<div class="pagamento">
+<strong>Forma de pagamento:</strong><br><br>
+
+<label>
+<input type="radio" name="pagamento" value="Pix" checked>
+Pix
+</label>
+
+<br>
+
+<label>
+<input type="radio" name="pagamento" value="Dinheiro" onclick="mostrarTroco()">
+Dinheiro
+</label>
+
+<div id="trocoDiv" style="display:none; margin-top:10px;">
+Troco para quanto?
+<input type="number" id="troco" placeholder="Digite o valor">
+</div>
 </div>
 
 </div>
 
 <script>
-function enviarPedido(tamanho, precoBase, botao){
-
-let card = botao.closest(".card");
-let adicionais = card.querySelectorAll("input[type=checkbox]:checked");
-
-let total = precoBase;
-let lista = "";
-
-adicionais.forEach(item=>{
-let preco = parseFloat(item.dataset.preco);
-total += preco;
-lista += "- " + item.value + " (+R$"+preco+",00)%0A";
-});
-
-let recebimento = document.querySelector("input[name=recebimento]:checked").value;
-
-if(recebimento === "Entrega"){
-total += 4;
+function mostrarTroco(){
+    document.getElementById("trocoDiv").style.display = "block";
 }
 
-let pagamento = prompt("Forma de pagamento: PIX ou DINHEIRO");
+function enviarPedido(tamanho, precoBase){
 
-let troco = "";
-if(pagamento && pagamento.toLowerCase() === "dinheiro"){
-troco = prompt("Precisa de troco? Se sim, para quanto?");
-}
+    let adicionais = [];
+    let adicionalValor = 0;
 
-let mensagem = "🍧 *Pedido Açaí Batido*%0A%0A";
-mensagem += "Tamanho: " + tamanho + "%0A%0A";
-mensagem += "Adicionais:%0A" + (lista || "Nenhum%0A") + "%0A";
-mensagem += "Recebimento: " + recebimento + "%0A";
+    document.querySelectorAll(".card").forEach(card=>{
+        if(card.innerHTML.includes(tamanho)){
+            card.querySelectorAll("input[type=checkbox]").forEach(item=>{
+                if(item.checked){
+                    adicionais.push(item.value);
+                    if(item.value === "Paçoca") adicionalValor += 2;
+                    if(item.value === "Leite em pó") adicionalValor += 3;
+                    if(item.value === "Leite condensado") adicionalValor += 2;
+                }
+            });
+        }
+    });
 
-if(recebimento === "Entrega"){
-mensagem += "Bairro: Jardim Jacira%0A";
-mensagem += "Taxa: R$4,00%0A";
-}
+    let entrega = document.querySelector("input[name='recebimento']:checked").value;
+    let taxa = entrega === "Entrega" ? 4 : 0;
 
-mensagem += "%0APagamento: " + pagamento + "%0A";
+    let pagamento = document.querySelector("input[name='pagamento']:checked").value;
+    let troco = document.getElementById("troco").value;
 
-if(pagamento && pagamento.toLowerCase() === "dinheiro" && troco){
-mensagem += "Troco para: " + troco + "%0A";
-}
+    let total = precoBase + adicionalValor + taxa;
 
-mensagem += "%0ATotal: R$" + total + ",00";
+    let mensagem = `🍇 *Pedido Açaí Batido*%0A`;
+    mensagem += `Tamanho: ${tamanho}%0A`;
+    mensagem += `Adicionais: ${adicionais.length > 0 ? adicionais.join(", ") : "Nenhum"}%0A`;
+    mensagem += `Recebimento: ${entrega}%0A`;
+    mensagem += `Pagamento: ${pagamento}%0A`;
 
-let numero = "5511943818352";
+    if(pagamento === "Dinheiro" && troco){
+        mensagem += `Troco para: R$ ${troco}%0A`;
+    }
 
-window.open("https://wa.me/" + numero + "?text=" + mensagem, "_blank");
+    mensagem += `Total: R$ ${total},00`;
+
+    window.open(`https://wa.me/551194381832?text=${mensagem}`);
 }
 </script>
 
