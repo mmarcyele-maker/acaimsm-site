@@ -22,8 +22,8 @@ header{background:linear-gradient(90deg,#6a00ff,#a100ff);color:#fff;padding:18px
 /* Carrinho */
 #carrinhoIcon{position:fixed;bottom:20px;right:20px;background:#6a00ff;color:#fff;padding:15px;border-radius:50px;cursor:pointer;z-index:1000}
 #contador{background:red;border-radius:50%;padding:3px 7px;font-size:12px;margin-left:5px}
-#carrinho{position:fixed;right:-100%;top:0;width:90%;height:100%;background:#fff;transition:.4s;padding:20px;overflow:auto;z-index:999}
-#carrinho.ativo{right:0}
+#carrinhoBox{position:fixed;right:-100%;top:0;width:90%;height:100%;background:#fff;transition:.4s;padding:20px;overflow:auto;z-index:999}
+#carrinhoBox.ativo{right:0}
 .item-carrinho{border-bottom:1px solid #ddd;padding:8px 0}
 .remover{color:red;cursor:pointer;font-size:13px}
 .total{font-weight:bold;font-size:18px;margin-top:10px}
@@ -39,7 +39,7 @@ textarea{resize:none}
 
 <div class="container">
 
-<!-- PRODUTO -->
+<!-- AÇAÍ 300ML -->
 <div class="card" data-nome="Açaí 300ml" data-preco="14">
   <div class="card-conteudo">
     <img src="1770533878737.png">
@@ -56,7 +56,7 @@ textarea{resize:none}
 
   <h4>Adicionais (R$ 2,00)</h4>
 
-  <div class="adicional" data-nome="Paçoca" data-preco="2">
+  <div class="adicional" data-nome="Paçoca">
     <span>Paçoca</span>
     <div class="quantidade">
       <button onclick="alterarQtd(this,-1)">−</button>
@@ -65,7 +65,7 @@ textarea{resize:none}
     </div>
   </div>
 
-  <div class="adicional" data-nome="Leite em pó" data-preco="2">
+  <div class="adicional" data-nome="Leite em pó">
     <span>Leite em pó</span>
     <div class="quantidade">
       <button onclick="alterarQtd(this,-1)">−</button>
@@ -74,7 +74,54 @@ textarea{resize:none}
     </div>
   </div>
 
-  <div class="adicional" data-nome="Leite condensado" data-preco="2">
+  <div class="adicional" data-nome="Leite condensado">
+    <span>Leite condensado</span>
+    <div class="quantidade">
+      <button onclick="alterarQtd(this,-1)">−</button>
+      <span class="qtd">0</span>
+      <button onclick="alterarQtd(this,1)">+</button>
+    </div>
+  </div>
+
+  <button class="botao-add" onclick="adicionarCarrinho(this)">Adicionar</button>
+</div>
+
+<!-- AÇAÍ 500ML -->
+<div class="card" data-nome="Açaí 500ml" data-preco="18">
+  <div class="card-conteudo">
+    <img src="1770533878737.png">
+    <div class="card-info">
+      <h3>500ml</h3>
+      <div class="preco">R$ 18,00</div>
+      <div class="quantidade">
+        <button onclick="alterarQtd(this,-1)">−</button>
+        <span class="qtd">1</span>
+        <button onclick="alterarQtd(this,1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <h4>Adicionais (R$ 2,00)</h4>
+
+  <div class="adicional" data-nome="Paçoca">
+    <span>Paçoca</span>
+    <div class="quantidade">
+      <button onclick="alterarQtd(this,-1)">−</button>
+      <span class="qtd">0</span>
+      <button onclick="alterarQtd(this,1)">+</button>
+    </div>
+  </div>
+
+  <div class="adicional" data-nome="Leite em pó">
+    <span>Leite em pó</span>
+    <div class="quantidade">
+      <button onclick="alterarQtd(this,-1)">−</button>
+      <span class="qtd">0</span>
+      <button onclick="alterarQtd(this,1)">+</button>
+    </div>
+  </div>
+
+  <div class="adicional" data-nome="Leite condensado">
     <span>Leite condensado</span>
     <div class="quantidade">
       <button onclick="alterarQtd(this,-1)">−</button>
@@ -89,7 +136,7 @@ textarea{resize:none}
 </div>
 
 <!-- CARRINHO -->
-<div id="carrinho">
+<div id="carrinhoBox">
 <h2>Seu Pedido</h2>
 
 <input id="nomeCliente" placeholder="Nome">
@@ -113,7 +160,7 @@ textarea{resize:none}
   <b>Nome:</b> Marcyele da Silva Maciel<br><br>
   <label>
     <input type="checkbox" id="confirmouPix">
-    Já realizei o pagamento e enviarei o comprovante
+    Já paguei no Pix e vou enviar o comprovante
   </label>
 </div>
 
@@ -129,95 +176,101 @@ textarea{resize:none}
 <div id="carrinhoIcon" onclick="abrirCarrinho()">🛒 <span id="contador">0</span></div>
 
 <script>
-let carrinho=[], total=0, taxaEntrega=0;
+let itensCarrinho = [];
+let total = 0;
+let taxaEntrega = 0;
+
+const carrinhoBox = document.getElementById("carrinhoBox");
+const contador = document.getElementById("contador");
 
 function alterarQtd(btn,v){
-  let s=btn.parentElement.querySelector(".qtd");
-  s.innerText=Math.max(0,parseInt(s.innerText)+v);
+  let s = btn.parentElement.querySelector(".qtd");
+  s.innerText = Math.max(0, parseInt(s.innerText) + v);
 }
 
-function adicionarCarrinho(b){
-  let c=b.closest(".card");
-  let nome=c.dataset.nome;
-  let preco=+c.dataset.preco;
-  let qtd=+c.querySelector(".card-info .qtd").innerText;
-  if(!qtd)return;
+function adicionarCarrinho(botao){
+  let card = botao.closest(".card");
+  let nome = card.dataset.nome;
+  let preco = +card.dataset.preco;
+  let qtd = +card.querySelector(".card-info .qtd").innerText;
+  if(!qtd) return;
 
-  let adicionais=[], sub=qtd*preco;
+  let adicionais = [];
+  let sub = qtd * preco;
 
-  c.querySelectorAll(".adicional").forEach(a=>{
-    let q=+a.querySelector(".qtd").innerText;
+  card.querySelectorAll(".adicional").forEach(a=>{
+    let q = +a.querySelector(".qtd").innerText;
     if(q){
-      let totalAdd=q*qtd;
-      sub+=totalAdd*2;
+      let totalAdd = q * qtd;
+      sub += totalAdd * 2;
       adicionais.push(`${a.dataset.nome} x${totalAdd}`);
-      a.querySelector(".qtd").innerText=0;
+      a.querySelector(".qtd").innerText = 0;
     }
   });
 
-  carrinho.push({nome,qtd,adicionais,sub});
-  total+=sub;
-  c.querySelector(".card-info .qtd").innerText=1;
+  itensCarrinho.push({nome,qtd,adicionais,sub});
+  total += sub;
+  card.querySelector(".card-info .qtd").innerText = 1;
   atualizar();
 }
 
 function atualizar(){
-  let lista=document.getElementById("lista");
-  lista.innerHTML="";
-  let itens=0;
+  let lista = document.getElementById("lista");
+  lista.innerHTML = "";
+  let itens = 0;
 
-  carrinho.forEach((i,n)=>{
-    itens+=i.qtd;
-    lista.innerHTML+=`
+  itensCarrinho.forEach((i,n)=>{
+    itens += i.qtd;
+    lista.innerHTML += `
       <div class="item-carrinho">
         <b>${i.nome} x${i.qtd}</b><br>
-        ${i.adicionais.length?"➕ "+i.adicionais.join(", ")+"<br>":""}
+        ${i.adicionais.length ? "➕ "+i.adicionais.join(", ")+"<br>" : ""}
         Subtotal: R$ ${i.sub.toFixed(2)}<br>
         <span class="remover" onclick="remover(${n})">Remover</span>
       </div>`;
   });
 
-  document.getElementById("contador").innerText=itens;
-  document.getElementById("totalDiv").innerText=
-    "Total: R$ "+(total+taxaEntrega).toFixed(2);
+  contador.innerText = itens;
+  document.getElementById("totalDiv").innerText =
+    "Total: R$ " + (total + taxaEntrega).toFixed(2);
 }
 
 function remover(i){
-  total-=carrinho[i].sub;
-  carrinho.splice(i,1);
+  total -= itensCarrinho[i].sub;
+  itensCarrinho.splice(i,1);
   atualizar();
 }
 
-function abrirCarrinho(){atualizar();carrinho.classList.add("ativo")}
-function fecharCarrinho(){carrinho.classList.remove("ativo")}
+function abrirCarrinho(){ atualizar(); carrinhoBox.classList.add("ativo"); }
+function fecharCarrinho(){ carrinhoBox.classList.remove("ativo"); }
 
-tipoEntrega.onchange=e=>{
-  taxaEntrega=e.target.value==="jacira"?4:0;
+document.getElementById("tipoEntrega").onchange = e=>{
+  taxaEntrega = e.target.value==="jacira" ? 4 : 0;
   atualizar();
-}
+};
 
-pagamento.onchange=()=>{
-  pixInfo.style.display=pagamento.value==="Pix"?"block":"none";
-}
+document.getElementById("pagamento").onchange = ()=>{
+  document.getElementById("pixInfo").style.display =
+    pagamento.value==="Pix" ? "block" : "none";
+};
 
 function finalizar(){
-  if(!nomeCliente.value||!tipoEntrega.value||!pagamento.value){
+  if(!nomeCliente.value || !tipoEntrega.value || !pagamento.value){
     alert("Preencha os dados obrigatórios");
     return;
   }
-  if(pagamento.value==="Pix"&&!confirmouPix.checked){
+  if(pagamento.value==="Pix" && !confirmouPix.checked){
     alert("Confirme o pagamento Pix");
     return;
   }
 
   let msg=`🍧 *Pedido Açaí MSM*%0A👤 ${nomeCliente.value}%0A`;
-
-  msg+=tipoEntrega.value==="retirada"
-    ?`📍 Retirada: Rua Érico Veríssimo 159%0A`
-    :`🚚 Entrega Jardim Jacira (+R$4)%0A`;
+  msg+= tipoEntrega.value==="retirada"
+    ? `📍 Retirada: Rua Érico Veríssimo 159%0A`
+    : `🚚 Entrega Jardim Jacira (+R$4)%0A`;
 
   msg+=`%0A🧾 Itens:%0A`;
-  carrinho.forEach(i=>{
+  itensCarrinho.forEach(i=>{
     msg+=`• ${i.nome} x${i.qtd} – R$ ${i.sub.toFixed(2)}%0A`;
     if(i.adicionais.length) msg+=`  ➕ ${i.adicionais.join(", ")}%0A`;
   });
