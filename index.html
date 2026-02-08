@@ -1,83 +1,100 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Açaí Batido MSM</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 body{
 margin:0;
 font-family:'Poppins',sans-serif;
-background:#f5f5f5;
+background:#f2f2f2;
 }
 
 header{
 background:linear-gradient(135deg,#4b007d,#8e2de2);
-padding:30px 20px;
 color:white;
+padding:25px;
 text-align:center;
+font-size:22px;
+font-weight:700;
 }
 
-header h1{
-margin:0;
-font-size:28px;
-}
-
-.container{
-padding:20px;
-}
-
-.card{
+.produto{
 background:white;
-border-radius:18px;
-box-shadow:0 8px 20px rgba(0,0,0,0.1);
+margin:15px;
+border-radius:16px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
 overflow:hidden;
-margin-bottom:20px;
-transition:0.3s;
+cursor:pointer;
 }
 
-.card img{
+.produto img{
 width:100%;
-height:220px;
+height:200px;
 object-fit:cover;
 }
 
-.card-content{
+.info{
 padding:15px;
 }
 
-.title{
+.nome{
 font-weight:600;
 font-size:18px;
 }
 
-.price{
-color:#4b007d;
-font-size:20px;
+.preco{
+color:#8e2de2;
 font-weight:700;
+font-size:20px;
+}
+
+.modal{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:white;
+border-radius:20px 20px 0 0;
+padding:20px;
+display:none;
+box-shadow:0 -5px 20px rgba(0,0,0,0.2);
+}
+
+.adicional{
+display:flex;
+justify-content:space-between;
 margin:10px 0;
 }
 
 .btn{
 background:#8e2de2;
 color:white;
+padding:15px;
 border:none;
-padding:12px;
-width:100%;
 border-radius:12px;
+width:100%;
 font-weight:600;
-cursor:pointer;
-transition:0.3s;
+margin-top:15px;
 }
 
-.btn:hover{
-background:#4b007d;
+.carrinho{
+position:fixed;
+right:0;
+top:0;
+width:300px;
+height:100%;
+background:white;
+box-shadow:-5px 0 20px rgba(0,0,0,0.2);
+padding:20px;
+display:none;
+overflow:auto;
 }
 
-.cart-btn{
+.cart-button{
 position:fixed;
 bottom:20px;
 right:20px;
@@ -86,54 +103,132 @@ color:white;
 padding:15px;
 border-radius:50%;
 font-size:20px;
-box-shadow:0 5px 15px rgba(0,0,0,0.3);
 cursor:pointer;
 }
 </style>
 </head>
-
 <body>
 
-<header>
-<h1>Açaí Batido MSM</h1>
-<p>300ml e 500ml • Faça seu pedido</p>
-</header>
+<header>Açaí Batido MSM</header>
 
-<div class="container">
-
-<div class="card">
-<img src="SUA-IMAGEM-AQUI.jpg">
-<div class="card-content">
-<div class="title">Açaí 300ml</div>
-<div class="price">R$ 14,00</div>
-<button class="btn" onclick="addCart('300ml',14)">Adicionar</button>
+<div class="produto" onclick="abrirModal('300ml',14)">
+<img src="acai.jpg">
+<div class="info">
+<div class="nome">Açaí 300ml</div>
+<div class="preco">R$14,00</div>
 </div>
 </div>
 
-<div class="card">
-<img src="SUA-IMAGEM-AQUI.jpg">
-<div class="card-content">
-<div class="title">Açaí 500ml</div>
-<div class="price">R$ 18,00</div>
-<button class="btn" onclick="addCart('500ml',18)">Adicionar</button>
+<div class="produto" onclick="abrirModal('500ml',18)">
+<img src="acai.jpg">
+<div class="info">
+<div class="nome">Açaí 500ml</div>
+<div class="preco">R$18,00</div>
 </div>
 </div>
 
+<div class="modal" id="modal">
+<h3 id="tituloProduto"></h3>
+
+<div class="adicional">
+<label><input type="checkbox" value="Leite em pó" data-preco="3" onchange="atualizarPreco()"> Leite em pó</label>
+<span>+R$3</span>
 </div>
 
-<div class="cart-btn" onclick="sendWhats()">🛒</div>
+<div class="adicional">
+<label><input type="checkbox" value="Leite condensado" data-preco="2" onchange="atualizarPreco()"> Leite condensado</label>
+<span>+R$2</span>
+</div>
+
+<div class="adicional">
+<label><input type="checkbox" value="Paçoca" data-preco="2" onchange="atualizarPreco()"> Paçoca</label>
+<span>+R$2</span>
+</div>
+
+<button class="btn" onclick="adicionarCarrinho()" id="btnAdicionar">
+Adicionar - R$0
+</button>
+
+</div>
+
+<div class="carrinho" id="carrinho">
+<h3>Seu Pedido</h3>
+<div id="listaCarrinho"></div>
+<hr>
+<strong>Total: R$ <span id="totalCarrinho">0</span></strong>
+<br><br>
+<button class="btn" onclick="enviarPedido()">Finalizar Pedido</button>
+</div>
+
+<div class="cart-button" onclick="abrirCarrinho()">🛒</div>
 
 <script>
-let cart=[];
+let produtoAtual="";
+let precoBase=0;
+let carrinho=[];
+let total=0;
 
-function addCart(tamanho,valor){
-cart.push(tamanho+" - R$"+valor);
-alert("Adicionado ao carrinho!");
+function abrirModal(nome,preco){
+produtoAtual=nome;
+precoBase=preco;
+document.getElementById("modal").style.display="block";
+document.getElementById("tituloProduto").innerText=nome;
+limparAdicionais();
+atualizarPreco();
 }
 
-function sendWhats(){
-let msg="Pedido Açaí MSM:%0A";
-cart.forEach(i=> msg+=i+"%0A");
+function limparAdicionais(){
+document.querySelectorAll(".modal input").forEach(c=>c.checked=false);
+}
+
+function atualizarPreco(){
+let soma=precoBase;
+document.querySelectorAll(".modal input:checked").forEach(item=>{
+soma+=parseFloat(item.dataset.preco);
+});
+document.getElementById("btnAdicionar").innerText="Adicionar - R$"+soma;
+}
+
+function adicionarCarrinho(){
+let adicionais=[];
+let valorFinal=precoBase;
+
+document.querySelectorAll(".modal input:checked").forEach(item=>{
+adicionais.push(item.value);
+valorFinal+=parseFloat(item.dataset.preco);
+});
+
+carrinho.push({produto:produtoAtual,valor:valorFinal,adicionais});
+total+=valorFinal;
+
+document.getElementById("modal").style.display="none";
+atualizarCarrinho();
+}
+
+function atualizarCarrinho(){
+let lista="";
+carrinho.forEach(item=>{
+lista+=item.produto+" - R$"+item.valor+"<br>";
+});
+document.getElementById("listaCarrinho").innerHTML=lista;
+document.getElementById("totalCarrinho").innerText=total;
+}
+
+function abrirCarrinho(){
+document.getElementById("carrinho").style.display="block";
+}
+
+function enviarPedido(){
+let msg="🍧 Pedido Açaí MSM:%0A%0A";
+carrinho.forEach(item=>{
+msg+=item.produto+" - R$"+item.valor+"%0A";
+if(item.adicionais.length>0){
+msg+="Adicionais: "+item.adicionais.join(", ")+"%0A";
+}
+msg+="%0A";
+});
+msg+="Total: R$"+total;
+
 window.open("https://wa.me/5511943818352?text="+msg);
 }
 </script>
