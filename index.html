@@ -127,6 +127,34 @@ button{cursor:pointer}
   <option>Pix</option>
   <option>Dinheiro</option>
 </select>
+  <div id="pagamentoDinheiro" style="display:none;">
+
+  <label>Valor pago (R$)</label>
+  <input
+    type="number"
+    id="valorPago"
+    placeholder="Ex: 50"
+    step="0.01"
+  >
+
+  <label>Precisa de troco?</label>
+  <select id="precisaTroco">
+    <option value="nao">Não</option>
+    <option value="sim">Sim</option>
+  </select>
+
+  <div id="campoTroco" style="display:none;">
+    <label>Troco para quanto? (R$)</label>
+    <input
+      type="number"
+      id="trocoPara"
+      placeholder="Ex: 100"
+      step="0.01"
+    >
+    <p id="resultadoTroco"></p>
+  </div>
+
+  </div>
 <div id="pixInfo" style="display:none">
   <b>Pix:</b> 11984550595<br>
   <b>Nome:</b> Marcyele da Silva Maciel<br>
@@ -253,7 +281,48 @@ function abrirAdmin(){
 function fecharAdmin(){ document.getElementById("adminBox").classList.remove("ativo"); }
 function limparPedidos(){ if(confirm("Limpar todos os pedidos?")){localStorage.removeItem("pedidosSalvos"); pedidosSalvos=[]; abrirAdmin(); } }
 
+  <script>
+  // Pagamento Dinheiro (mostrar / esconder)
+  const pagamento = document.getElementById("pagamento");
+  const pagamentoDinheiro = document.getElementById("pagamentoDinheiro");
+
+  pagamento.addEventListener("change", () => {
+    pagamentoDinheiro.style.display =
+      pagamento.value === "Dinheiro" ? "block" : "none";
+  });
+
+  // Mostrar campo de troco
+  const precisaTroco = document.getElementById("precisaTroco");
+  const campoTroco = document.getElementById("campoTroco");
+
+  precisaTroco.addEventListener("change", () => {
+    campoTroco.style.display =
+      precisaTroco.value === "sim" ? "block" : "none";
+  });
+
+  // Calcular troco
+  const trocoPara = document.getElementById("trocoPara");
+  const resultadoTroco = document.getElementById("resultadoTroco");
+
+  trocoPara.addEventListener("input", () => {
+    const totalTexto = document.getElementById("totalDiv").innerText;
+    const total = parseFloat(
+      totalTexto.replace("Total: R$", "").replace(",", ".")
+    );
+
+    const valorTrocoPara = parseFloat(trocoPara.value);
+
+    if (!valorTrocoPara || valorTrocoPara < total) {
+      resultadoTroco.innerText = "⚠️ Valor insuficiente para troco";
+      return;
+    }
+
+    const troco = valorTrocoPara - total;
+    resultadoTroco.innerText = `Troco: R$ ${troco.toFixed(2)}`;
+  });
 </script>
+
+  
 
 </body>
 </html>
