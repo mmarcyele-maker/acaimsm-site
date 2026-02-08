@@ -193,6 +193,14 @@ input{
     </div>
   </div>
 
+  <div class="adicional" data-nome="Leite condensado" data-preco="3">
+    <span>Leite condensado R$2,00</span>
+    <div class="quantidade">
+      <button onclick="alterarQtd(this,-1)">−</button>
+      <span class="qtd">0</span>
+      <button onclick="alterarQtd(this,1)">+</button>
+    </div>
+  </div>
   <button class="botao-add" onclick="adicionarCarrinho(this)">Adicionar</button>
 </div>
 
@@ -212,14 +220,7 @@ input{
     </div>
   </div>
 
-  <div class="adicional" data-nome="Leite condensado" data-preco="3">
-    <span>Leite condensado R$2,00</span>
-    <div class="quantidade">
-      <button onclick="alterarQtd(this,-1)">−</button>
-      <span class="qtd">0</span>
-      <button onclick="alterarQtd(this,1)">+</button>
-    </div>
-  </div>
+
 
   <h4>Adicionais</h4>
 
