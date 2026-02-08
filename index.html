@@ -5,157 +5,198 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Açaí Batido MSM</title>
 
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#7b2cbf">
+
 <style>
 body{
 margin:0;
-font-family:Arial, sans-serif;
-background:linear-gradient(135deg,#5e0080,#9c27b0);
+font-family:Arial;
+background:linear-gradient(180deg,#3a0ca3,#7209b7);
 color:white;
-text-align:center;
 }
 
-.container{
-background:white;
-color:black;
-margin:20px;
+header{
 padding:20px;
+text-align:center;
+font-size:22px;
+font-weight:bold;
+}
+
+.produto{
+background:#ffffff10;
+margin:15px;
+padding:15px;
 border-radius:15px;
-}
-
-.logo{
-width:200px;
-display:block;
-margin:20px auto;
-}
-
-h1{
-color:#5e0080;
-}
-
-select,input{
-width:100%;
-padding:10px;
-margin:8px 0;
+backdrop-filter:blur(10px);
 }
 
 button{
-background:#5e0080;
-color:white;
+background:#ffbe0b;
 border:none;
-padding:12px;
+padding:10px;
 border-radius:8px;
-font-size:16px;
+font-weight:bold;
 cursor:pointer;
-width:100%;
 }
 
-.hidden{
-display:none;
+.carrinho-btn{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#ff006e;
+width:60px;
+height:60px;
+border-radius:50%;
+color:white;
+font-size:20px;
+display:flex;
+align-items:center;
+justify-content:center;
+box-shadow:0 5px 20px #00000080;
+}
+
+.carrinho{
+position:fixed;
+top:0;
+right:-100%;
+width:80%;
+height:100%;
+background:#240046;
+transition:0.4s;
+padding:20px;
+overflow:auto;
+}
+
+.carrinho.aberto{
+right:0;
 }
 </style>
 </head>
 
 <body>
 
-<img src="logo.png" class="logo">
+<header>
+<img src="icon-512.png" width="120"><br>
+Açaí Batido MSM
+</header>
 
-<div class="container">
-
-<h1>Açaí Batido MSM</h1>
-
-<label>Tamanho:</label>
-<select id="tamanho">
-<option value="300ml - R$14">300ml - R$14</option>
-<option value="500ml - R$18">500ml - R$18</option>
-</select>
-
-<label>Adicionais:</label><br>
-<input type="checkbox" value="Leite"> Leite<br>
-<input type="checkbox" value="Leite condensado"> Leite condensado<br>
-<input type="checkbox" value="Granola"> Granola<br>
-<input type="checkbox" value="Paçoca"> Paçoca<br>
-
-<label>Tipo de pedido:</label>
-<select id="tipoPedido">
-<option value="Retirada">Retirada no local</option>
-<option value="Entrega">Entrega</option>
-</select>
-
-<div id="enderecoDiv" class="hidden">
-<label>Endereço:</label>
-<input type="text" id="endereco" placeholder="Digite seu endereço">
+<div class="produto">
+<h3>300ml - R$14</h3>
+<button onclick="addCarrinho('300ml',14)">Adicionar</button>
 </div>
 
-<label>Pagamento:</label>
-<select id="pagamento">
-<option value="Pix">Pix</option>
-<option value="Dinheiro">Dinheiro</option>
-</select>
-
-<div id="trocoDiv" class="hidden">
-<label>Troco para quanto?</label>
-<input type="text" id="troco" placeholder="Ex: 50">
+<div class="produto">
+<h3>500ml - R$18</h3>
+<button onclick="addCarrinho('500ml',18)">Adicionar</button>
 </div>
 
-<button onclick="enviarPedido()">Fazer Pedido</button>
+<div class="produto">
+<h3>Adicionais</h3>
+<button onclick="addCarrinho('Leite em pó',3)">+ Leite em pó R$3</button><br><br>
+<button onclick="addCarrinho('Leite condensado',2)">+ Leite condensado R$2</button><br><br>
+<button onclick="addCarrinho('Paçoca',2)">+ Paçoca R$2</button>
+</div>
 
+<div class="carrinho-btn" onclick="abrirCarrinho()">🛒</div>
+
+<div class="carrinho" id="carrinho">
+<h2>Seu Pedido</h2>
+<div id="lista"></div>
+<h3 id="total"></h3>
+<button onclick="enviar()">Enviar Pedido</button>
+<button onclick="fecharCarrinho()">Fechar</button>
 </div>
 
 <script>
+let carrinho=[];
 
-document.getElementById("tipoPedido").addEventListener("change", function(){
-if(this.value === "Entrega"){
-document.getElementById("enderecoDiv").classList.remove("hidden");
-}else{
-document.getElementById("enderecoDiv").classList.add("hidden");
+function addCarrinho(nome,preco){
+carrinho.push({nome,preco});
+atualizar();
+new Audio("https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg").play();
 }
+
+function atualizar(){
+let lista=document.getElementById("lista");
+lista.innerHTML="";
+let total=0;
+carrinho.forEach(item=>{
+lista.innerHTML+=item.nome+" - R$"+item.preco+"<br>";
+total+=item.preco;
 });
-
-document.getElementById("pagamento").addEventListener("change", function(){
-if(this.value === "Dinheiro"){
-document.getElementById("trocoDiv").classList.remove("hidden");
-}else{
-document.getElementById("trocoDiv").classList.add("hidden");
+document.getElementById("total").innerText="Total: R$"+total;
+localStorage.setItem("pedido",JSON.stringify(carrinho));
 }
+
+function abrirCarrinho(){
+document.getElementById("carrinho").classList.add("aberto");
+}
+
+function fecharCarrinho(){
+document.getElementById("carrinho").classList.remove("aberto");
+}
+
+function enviar(){
+let pedido="Pedido:%0A";
+let total=0;
+carrinho.forEach(item=>{
+pedido+=item.nome+" - R$"+item.preco+"%0A";
+total+=item.preco;
 });
-
-function enviarPedido(){
-
-var tamanho = document.getElementById("tamanho").value;
-var tipoPedido = document.getElementById("tipoPedido").value;
-var pagamento = document.getElementById("pagamento").value;
-var endereco = document.getElementById("endereco").value;
-var troco = document.getElementById("troco").value;
-
-var adicionais = [];
-document.querySelectorAll("input[type=checkbox]:checked").forEach(function(item){
-adicionais.push(item.value);
-});
-
-var mensagem = "🍧 *Novo Pedido - Açaí Batido MSM*%0A%0A";
-mensagem += "📦 Tamanho: " + tamanho + "%0A";
-mensagem += "➕ Adicionais: " + (adicionais.length ? adicionais.join(", ") : "Nenhum") + "%0A";
-mensagem += "🚚 Tipo: " + tipoPedido + "%0A";
-
-if(tipoPedido === "Entrega"){
-mensagem += "📍 Endereço: " + endereco + "%0A";
+pedido+="Total: R$"+total;
+window.open("https://wa.me/5511943818352?text="+pedido);
 }
 
-mensagem += "💰 Pagamento: " + pagamento + "%0A";
-
-if(pagamento === "Dinheiro" && troco){
-mensagem += "💵 Troco para: R$" + troco + "%0A";
+if(localStorage.getItem("pedido")){
+carrinho=JSON.parse(localStorage.getItem("pedido"));
+atualizar();
 }
 
-if(pagamento === "Pix"){
-mensagem += "%0A🔑 Chave Pix: 11943818352%0A";
-}
-
-var numero = "5511943818352";
-window.open("https://wa.me/" + numero + "?text=" + mensagem, "_blank");
-
+if('serviceWorker' in navigator){
+navigator.serviceWorker.register('service-worker.js');
 }
 </script>
 
 </body>
 </html>
+{
+  "name": "Açaí Batido MSM",
+  "short_name": "Açaí MSM",
+  "start_url": "/acaimsm-site/",
+  "display": "standalone",
+  "background_color": "#3a0ca3",
+  "theme_color": "#7209b7",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+self.addEventListener('install',e=>{
+e.waitUntil(
+caches.open('acai-cache').then(cache=>{
+return cache.addAll([
+'/acaimsm-site/',
+'/acaimsm-site/index.html',
+'/acaimsm-site/icon-192.png',
+'/acaimsm-site/icon-512.png'
+]);
+})
+);
+});
+
+self.addEventListener('fetch',e=>{
+e.respondWith(
+caches.match(e.request).then(resp=>{
+return resp || fetch(e.request);
+})
+);
+});
