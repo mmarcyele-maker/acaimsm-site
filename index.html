@@ -2,278 +2,293 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Açaí MSM</title>
 
 <style>
-body{font-family:Arial;margin:0;background:#f4f4f4}
-.card{background:#fff;margin:10px;padding:10px;border-radius:8px}
-.qtd{margin:0 5px}
-button{cursor:pointer}
+body{
+  font-family:Arial, sans-serif;
+  background:#f4f4f4;
+  margin:0;
+  padding:10px;
+}
+
+h2{margin-top:0}
+
+.card{
+  background:#fff;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:12px;
+  box-shadow:0 2px 6px rgba(0,0,0,.1);
+}
+
+.linha{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin:5px 0;
+}
+
+button{
+  padding:4px 8px;
+  border:none;
+  border-radius:4px;
+  background:#7b2cbf;
+  color:#fff;
+}
+
+button.sec{
+  background:#999;
+}
+
+.qtd{
+  min-width:20px;
+  text-align:center;
+}
+
+#adicional{
+  margin-left:10px;
+}
 
 #carrinhoIcon{
-  position:fixed;bottom:15px;right:15px;
-  background:#800080;color:#fff;
-  padding:10px;border-radius:50%;
-  font-size:18px;z-index:1000
+  position:fixed;
+  bottom:15px;
+  right:15px;
+  background:#7b2cbf;
+  color:#fff;
+  padding:14px;
+  border-radius:50%;
+  font-size:18px;
+  z-index:1000;
+}
+
+#contador{
+  font-size:14px;
 }
 
 #carrinhoBox{
-  position:fixed;top:0;right:-100%;
-  width:90%;max-width:400px;height:100%;
-  background:#fff;z-index:999;
-  transition:.4s ease;overflow-y:auto;
+  position:fixed;
+  top:0;
+  right:-100%;
+  width:100%;
+  max-width:400px;
+  height:100%;
+  background:#fff;
+  z-index:999;
+  transition:.4s ease;
+  overflow-y:auto;
+  padding:10px;
   box-shadow:-5px 0 15px rgba(0,0,0,.3);
-  padding:10px
 }
-#carrinhoBox.ativo{right:0}
 
-.item-carrinho{border-bottom:1px solid #ddd;padding:8px 0}
-
-.total{font-size:18px;font-weight:bold;margin:10px 0}
-
-#adminBox{
-  display:none;position:fixed;top:0;left:0;
-  width:100%;height:100%;background:#fff;
-  z-index:2000;padding:10px;overflow:auto
+#carrinhoBox.ativo{
+  right:0;
 }
-#adminBox.ativo{display:block}
+
+.item{
+  border-bottom:1px solid #ddd;
+  padding:6px 0;
+}
+
+.total{
+  font-size:18px;
+  font-weight:bold;
+  margin:10px 0;
+}
 </style>
 </head>
 
 <body>
 
-<!-- PRODUTO EXEMPLO -->
-<div class="card" data-nome="Açaí 500ml" data-preco="18" data-img="img/acai500.png">
-  <h3>Açaí 500ml</h3>
-  <button onclick="alterarQtd(this,-1)">➖</button>
-  <span class="qtd">1</span>
-  <button onclick="alterarQtd(this,1)">➕</button>
+<h2>🍧 Açaí MSM</h2>
 
-  <div class="adicional" data-nome="Leite em pó" data-preco="2">
-    Leite em pó R$2
-    <button onclick="alterarQtd(this,-1)">➖</button>
-    <span class="qtd">0</span>
-    <button onclick="alterarQtd(this,1)">➕</button>
+<div class="card">
+  <b>Açaí 500ml — R$18,00</b>
+
+  <div class="linha">
+    <button onclick="alt(this,-1)">➖</button>
+    <span class="qtd">1</span>
+    <button onclick="alt(this,1)">➕</button>
   </div>
 
-  <div class="adicional" data-nome="Leite condensado" data-preco="2">
-    Leite condensado R$2
-    <button onclick="alterarQtd(this,-1)">➖</button>
-    <span class="qtd">0</span>
-    <button onclick="alterarQtd(this,1)">➕</button>
+  <div id="adicional">
+    <div class="linha" data-nome="Leite em pó" data-preco="2">
+      Leite em pó R$2
+      <button onclick="alt(this,-1)">➖</button>
+      <span class="qtd">0</span>
+      <button onclick="alt(this,1)">➕</button>
+    </div>
+
+    <div class="linha" data-nome="Leite condensado" data-preco="2">
+      Leite condensado R$2
+      <button onclick="alt(this,-1)">➖</button>
+      <span class="qtd">0</span>
+      <button onclick="alt(this,1)">➕</button>
+    </div>
   </div>
 
-  <br>
-  <button onclick="adicionarCarrinho(this)">Adicionar</button>
+  <button onclick="add()">Adicionar</button>
 </div>
 
 <!-- CARRINHO -->
 <div id="carrinhoBox">
 <h3>Carrinho</h3>
 
-<input id="nomeCliente" placeholder="Seu nome"><br><br>
+<input id="nome" placeholder="Seu nome"><br><br>
 
-<select id="tipoEntrega">
+<select id="entrega" onchange="calcEntrega()">
   <option value="">Entrega ou retirada</option>
   <option value="retirada">Retirada grátis</option>
-  <option value="jacira">Entrega Jardim Jacira (+R$4)</option>
+  <option value="entrega">Entrega Jardim Jacira (+R$4)</option>
 </select><br><br>
 
-<input id="enderecoCliente" placeholder="Endereço (se entrega)"><br><br>
+<input id="endereco" placeholder="Endereço (se entrega)"><br><br>
 
-<select id="pagamento">
+<select id="pagamento" onchange="trocaPagamento()">
   <option value="">Forma de pagamento</option>
   <option>Pix</option>
   <option>Dinheiro</option>
 </select>
 
-<div id="pixInfo" style="display:none">
-  <b>Pix:</b> 11984550595<br>
-  <b>Nome:</b> Marcyele da Silva Maciel<br>
-  <label><input type="checkbox" id="confirmouPix"> Confirmei pagamento Pix</label>
+<div id="pix" style="display:none">
+  <p><b>Pix:</b> 11984550595<br>
+  <b>Nome:</b> Marcyele da Silva Maciel</p>
 </div>
 
 <div id="trocoBox" style="display:none">
-  <input id="valorPago" type="number" placeholder="Vai pagar com quanto?" oninput="calcularTroco()">
+  <input id="valorPago" type="number" placeholder="Vai pagar com quanto?" oninput="calcTroco()">
   <label>
-    <input type="checkbox" id="semTroco" onchange="calcularTroco()"> Não precisa de troco
+    <input type="checkbox" id="semTroco" onchange="calcTroco()"> Não precisa de troco
   </label>
-  <div id="trocoInfo"></div>
+  <div id="infoTroco"></div>
 </div>
-
-<textarea id="obs" placeholder="Observações"></textarea>
 
 <div id="lista"></div>
-<div class="total" id="totalDiv">Total: R$ 0,00</div>
+<div class="total" id="total">Total: R$ 0,00</div>
 
-<button onclick="finalizar()">Finalizar no WhatsApp</button><br><br>
-<button onclick="fecharCarrinho()">Fechar</button>
+<button onclick="finalizar()">Finalizar no WhatsApp</button>
+<button class="sec" onclick="fechar()">Fechar</button>
 </div>
 
-<button id="adminBtn" onclick="abrirAdmin()">Admin</button>
-
-<div id="adminBox">
-<h2>Painel Admin</h2>
-<div id="adminPedidos"></div>
-<div class="total" id="totalFaturado"></div>
-<button onclick="limparPedidos()">Limpar pedidos</button>
-<button onclick="fecharAdmin()">Fechar</button>
-</div>
-
-<div id="carrinhoIcon" onclick="abrirCarrinho()">🛒 <span id="contador">0</span></div>
+<div id="carrinhoIcon" onclick="abrir()">🛒 <span id="contador">0</span></div>
 
 <script>
-let carrinho=[], total=0, taxaEntrega=0, pedidosSalvos=[];
+let carrinho=[], total=0, taxa=0;
 
-function alterarQtd(btn,v){
+function alt(btn,v){
   let s=btn.parentElement.querySelector(".qtd");
-  s.innerText=Math.max(0,parseInt(s.innerText)+v);
+  s.innerText=Math.max(0, +s.innerText+v);
 }
 
-function adicionarCarrinho(btn){
-  let card=btn.closest(".card");
-  let nome=card.dataset.nome;
-  let preco=+card.dataset.preco;
-  let img=card.dataset.img;
-  let qtd=+card.querySelector(".card .qtd").innerText;
-  if(!qtd) return;
+function add(){
+  let card=document.querySelector(".card");
+  let qtd=+card.querySelector(".qtd").innerText;
+  if(!qtd)return;
 
-  let adicionais=[], sub=qtd*preco;
+  let sub=18*qtd;
+  let ads=[];
 
-  card.querySelectorAll(".adicional").forEach(a=>{
+  card.querySelectorAll("#adicional .linha").forEach(a=>{
     let q=+a.querySelector(".qtd").innerText;
-    let p=+a.dataset.preco;
     if(q){
+      let p=+a.dataset.preco;
       sub+=q*p;
-      adicionais.push(`${a.dataset.nome} R$${p.toFixed(2)} x${q}`);
+      ads.push({nome:a.dataset.nome,valor:q*p});
       a.querySelector(".qtd").innerText=0;
     }
   });
 
-  carrinho.push({nome,qtd,img,adicionais,sub});
+  carrinho.push({qtd,ads,sub});
   total+=sub;
-  atualizarCarrinho();
+  salvar();
+  atualizar();
 }
 
-function atualizarCarrinho(){
-  let lista=document.getElementById("lista");
+function atualizar(){
   lista.innerHTML="";
   let itens=0;
 
-  carrinho.forEach((i,index)=>{
+  carrinho.forEach((i,idx)=>{
     itens+=i.qtd;
-
-    let ads="";
-    i.adicionais.forEach((a,ai)=>{
-      let v=parseFloat(a.match(/R\\$([0-9.]+)/)[1]);
-      ads+=`
-        <div>
-          ➕ ${a}
-          <button onclick="removerAdicional(${index},${ai},${v})">❌</button>
-        </div>`;
-    });
-
     lista.innerHTML+=`
-      <div class="item-carrinho">
-        <img src="${i.img}" width="40" style="float:left;margin-right:8px;border-radius:6px">
-        <b>${i.nome}</b>
-        <div style="float:right">
-          <button onclick="alterarQtdCarrinho(${index},-1)">➖</button>
-          ${i.qtd}
-          <button onclick="alterarQtdCarrinho(${index},1)">➕</button>
-          <button onclick="removerItem(${index})">❌</button>
-        </div>
-        <br>${ads}
+      <div class="item">
+        Açaí 500ml x${i.qtd}
+        <button onclick="rm(${idx})">❌</button><br>
+        ${i.ads.map((a,j)=>`➕ ${a.nome} R$${a.valor.toFixed(2)}
+        <button onclick="rmAd(${idx},${j})">❌</button>`).join("<br>")}
         <div>Subtotal: R$ ${i.sub.toFixed(2)}</div>
       </div>`;
   });
 
   contador.innerText=itens;
-  totalDiv.innerText="Total: R$ "+(total+taxaEntrega).toFixed(2);
-  localStorage.setItem("carrinhoSalvo",JSON.stringify({carrinho,total}));
+  totalDiv();
 }
 
-function alterarQtdCarrinho(i,v){
-  let item=carrinho[i];
-  let unit=item.sub/item.qtd;
-  if(item.qtd+v<=0) return removerItem(i);
-  item.qtd+=v;
-  item.sub=unit*item.qtd;
-  total=carrinho.reduce((s,i)=>s+i.sub,0);
-  atualizarCarrinho();
+function totalDiv(){
+  totalSpan=total+taxa;
+  total.innerText="Total: R$ "+totalSpan.toFixed(2);
 }
 
-function removerItem(i){
+function rm(i){
   if(!confirm("Remover item?"))return;
   total-=carrinho[i].sub;
   carrinho.splice(i,1);
-  atualizarCarrinho();
+  salvar();
+  atualizar();
 }
 
-function removerAdicional(i,a,v){
+function rmAd(i,a){
   if(!confirm("Remover adicional?"))return;
-  carrinho[i].sub-=v;
-  total-=v;
-  carrinho[i].adicionais.splice(a,1);
-  atualizarCarrinho();
+  total-=carrinho[i].ads[a].valor;
+  carrinho[i].sub-=carrinho[i].ads[a].valor;
+  carrinho[i].ads.splice(a,1);
+  salvar();
+  atualizar();
 }
 
-function abrirCarrinho(){atualizarCarrinho();carrinhoBox.classList.add("ativo")}
-function fecharCarrinho(){carrinhoBox.classList.remove("ativo")}
+function abrir(){carrinhoBox.classList.add("ativo")}
+function fechar(){carrinhoBox.classList.remove("ativo")}
 
-tipoEntrega.onchange=e=>{taxaEntrega=e.target.value==="jacira"?4:0;atualizarCarrinho()}
+function calcEntrega(){
+  taxa=entrega.value==="entrega"?4:0;
+  totalDiv();
+}
 
-pagamento.onchange=()=>{
-  pixInfo.style.display=pagamento.value==="Pix"?"block":"none";
+function trocaPagamento(){
+  pix.style.display=pagamento.value==="Pix"?"block":"none";
   trocoBox.style.display=pagamento.value==="Dinheiro"?"block":"none";
 }
 
-function calcularTroco(){
+function calcTroco(){
   if(semTroco.checked){
-    trocoInfo.innerText="Não precisa de troco";
+    infoTroco.innerText="Não precisa de troco";
     return;
   }
   let p=+valorPago.value;
-  let t=total+taxaEntrega;
-  if(p<t) trocoInfo.innerText="Valor insuficiente";
-  else trocoInfo.innerText="Troco: R$ "+(p-t).toFixed(2);
+  let t=total+taxa;
+  infoTroco.innerText=p>=t?"Troco: R$ "+(p-t).toFixed(2):"Valor insuficiente";
 }
 
 function finalizar(){
-  if(!nomeCliente.value||!tipoEntrega.value||!pagamento.value)return alert("Preencha os dados");
+  if(!nome.value||!entrega.value||!pagamento.value)return alert("Preencha os dados");
 
-  let msg=`🍧 Pedido Açaí MSM\nCliente: ${nomeCliente.value}\n`;
-  msg+=tipoEntrega.value==="retirada"?"Retirada\n":"Entrega (+R$4)\n";
-  carrinho.forEach(i=>msg+=`• ${i.nome} x${i.qtd} R$${i.sub.toFixed(2)}\n`);
-  if(pagamento.value==="Dinheiro"){
-    if(semTroco.checked) msg+="💵 Dinheiro — sem troco\n";
-    else msg+=`💵 Pagará com R$${valorPago.value}\n`;
-  }
-  msg+=`Total: R$ ${(total+taxaEntrega).toFixed(2)}`;
-
-  localStorage.removeItem("carrinhoSalvo");
+  let msg=`🍧 Pedido Açaí MSM\nCliente: ${nome.value}\n`;
+  msg+=entrega.value==="retirada"?"Retirada\n":"Entrega (+R$4)\n";
+  carrinho.forEach(i=>msg+=`• Açaí 500ml x${i.qtd} R$${i.sub.toFixed(2)}\n`);
+  msg+=`Total: R$ ${(total+taxa).toFixed(2)}`;
   window.open("https://wa.me/5511943818352?text="+encodeURIComponent(msg));
+  localStorage.removeItem("carrinho");
+}
+
+function salvar(){
+  localStorage.setItem("carrinho",JSON.stringify({carrinho,total}));
 }
 
 window.onload=()=>{
-  let s=JSON.parse(localStorage.getItem("carrinhoSalvo"));
-  if(s){carrinho=s.carrinho;total=s.total;atualizarCarrinho();}
-}
-
-// ADMIN
-const senhaAdmin="msm2026";
-function abrirAdmin(){
-  let s=prompt("Senha:");
-  if(s!==senhaAdmin)return;
-  pedidosSalvos=JSON.parse(localStorage.getItem("pedidosSalvos"))||[];
-  let h="",t=0;
-  pedidosSalvos.forEach(p=>{h+=`<div>${p.nome} R$${p.total}</div>`;t+=p.total});
-  adminPedidos.innerHTML=h;
-  totalFaturado.innerText="Total: R$ "+t;
-  adminBox.classList.add("ativo");
-}
-function fecharAdmin(){adminBox.classList.remove("ativo")}
-function limparPedidos(){localStorage.clear();location.reload()}
+  let s=JSON.parse(localStorage.getItem("carrinho"));
+  if(s){carrinho=s.carrinho;total=s.total;atualizar();}
+};
 </script>
 
 </body>
