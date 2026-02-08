@@ -38,7 +38,7 @@ textarea{resize:none}
 
 <div class="container">
 
-<!-- 300ml -->
+<!-- PRODUTO 300ml -->
 <div class="card" data-nome="Açaí 300ml" data-preco="14">
   <div class="card-conteudo">
     <img src="1770533878737.png">
@@ -53,10 +53,10 @@ textarea{resize:none}
     </div>
   </div>
 
-  <h4>Adicionais</h4>
+  <h4>Adicionais (R$2,00 cada)</h4>
 
   <div class="adicional" data-nome="Paçoca" data-preco="2">
-    <span>Paçoca R$2,00</span>
+    <span>Paçoca</span>
     <div class="quantidade">
       <button onclick="alterarQtd(this,-1)">−</button>
       <span class="qtd">0</span>
@@ -65,7 +65,7 @@ textarea{resize:none}
   </div>
 
   <div class="adicional" data-nome="Leite em pó" data-preco="2">
-    <span>Leite em pó R$2,00</span>
+    <span>Leite em pó</span>
     <div class="quantidade">
       <button onclick="alterarQtd(this,-1)">−</button>
       <span class="qtd">0</span>
@@ -74,7 +74,7 @@ textarea{resize:none}
   </div>
 
   <div class="adicional" data-nome="Leite condensado" data-preco="2">
-    <span>Leite condensado R$2,00</span>
+    <span>Leite condensado</span>
     <div class="quantidade">
       <button onclick="alterarQtd(this,-1)">−</button>
       <span class="qtd">0</span>
@@ -85,7 +85,7 @@ textarea{resize:none}
   <button class="botao-add" onclick="adicionarCarrinho(this)">Adicionar</button>
 </div>
 
-<!-- 500ml -->
+<!-- PRODUTO 500ml -->
 <div class="card" data-nome="Açaí 500ml" data-preco="18">
   <div class="card-conteudo">
     <img src="1770533878737.png">
@@ -100,10 +100,10 @@ textarea{resize:none}
     </div>
   </div>
 
-  <h4>Adicionais</h4>
+  <h4>Adicionais (R$2,00 cada)</h4>
 
   <div class="adicional" data-nome="Paçoca" data-preco="2">
-    <span>Paçoca R$2,00</span>
+    <span>Paçoca</span>
     <div class="quantidade">
       <button onclick="alterarQtd(this,-1)">−</button>
       <span class="qtd">0</span>
@@ -112,7 +112,7 @@ textarea{resize:none}
   </div>
 
   <div class="adicional" data-nome="Leite em pó" data-preco="2">
-    <span>Leite em pó R$2,00</span>
+    <span>Leite em pó</span>
     <div class="quantidade">
       <button onclick="alterarQtd(this,-1)">−</button>
       <span class="qtd">0</span>
@@ -121,7 +121,7 @@ textarea{resize:none}
   </div>
 
   <div class="adicional" data-nome="Leite condensado" data-preco="2">
-    <span>Leite condensado R$2,00</span>
+    <span>Leite condensado</span>
     <div class="quantidade">
       <button onclick="alterarQtd(this,-1)">−</button>
       <span class="qtd">0</span>
@@ -134,7 +134,7 @@ textarea{resize:none}
 
 </div>
 
-<!-- Carrinho -->
+<!-- CARRINHO -->
 <div id="carrinho">
 <h2>Seu Pedido</h2>
 
@@ -147,6 +147,8 @@ textarea{resize:none}
   <option value="jacira">Entrega Jardim Jacira (+R$4)</option>
 </select>
 
+<div id="tempoEntrega" style="font-size:14px;color:#555"></div>
+
 <select id="pagamento">
   <option value="">Forma de pagamento</option>
   <option>Pix</option>
@@ -157,6 +159,7 @@ textarea{resize:none}
 <textarea id="obs" placeholder="Observações do pedido"></textarea>
 
 <div id="lista"></div>
+<div id="taxaEntregaDiv"></div>
 <div class="total" id="totalDiv">Total: R$ 0,00</div>
 
 <button onclick="finalizar()">Finalizar no WhatsApp</button><br><br>
@@ -165,14 +168,20 @@ textarea{resize:none}
 
 <div id="carrinhoIcon" onclick="abrirCarrinho()">🛒 <span id="contador">0</span></div>
 
-<script>
-let carrinho = [];
-let total = 0;
-let taxaEntrega = 0;
+<!-- QR CODE -->
+<div style="text-align:center;padding:20px">
+  <p><b>📲 Acesse nosso cardápio</b></p>
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://mmarcyele-maker.github.io/acaimsm-site/">
+</div>
 
-const carrinhoBox = document.getElementById("carrinho");
-const contador = document.getElementById("contador");
-const totalDiv = document.getElementById("totalDiv");
+<script>
+let carrinho=[], total=0, taxaEntrega=0;
+
+const carrinhoBox=document.getElementById("carrinho");
+const contador=document.getElementById("contador");
+const totalDiv=document.getElementById("totalDiv");
+const taxaEntregaDiv=document.getElementById("taxaEntregaDiv");
+const tempoEntregaDiv=document.getElementById("tempoEntrega");
 
 function alterarQtd(btn,v){
   let s=btn.parentElement.querySelector(".qtd");
@@ -192,11 +201,9 @@ function adicionarCarrinho(b){
 
   c.querySelectorAll(".adicional").forEach(a=>{
     let q=+a.querySelector(".qtd").innerText;
-    let p=+a.dataset.preco;
     if(q){
-      let totalAdd=q*qtd;
-      sub+=totalAdd*p;
-      adicionais.push(`${a.dataset.nome} x${totalAdd}`);
+      sub+=q*2;
+      adicionais.push(`${a.dataset.nome} x${q}`);
       a.querySelector(".qtd").innerText=0;
     }
   });
@@ -218,12 +225,13 @@ function atualizar(){
       <div class="item-carrinho">
         <b>${i.nome} x${i.qtd}</b><br>
         ${i.adicionais.length ? "Adicionais: "+i.adicionais.join(", ")+"<br>" : ""}
-        R$ ${i.sub.toFixed(2)}<br>
+        <small>Subtotal: R$ ${i.sub.toFixed(2)}</small><br>
         <span class="remover" onclick="remover(${n})">Remover</span>
       </div>`;
   });
 
   contador.innerText=itens;
+  taxaEntregaDiv.innerText = taxaEntrega ? "Taxa de entrega: R$ 4,00" : "";
   totalDiv.innerText="Total: R$ "+(total+taxaEntrega).toFixed(2);
 }
 
@@ -233,17 +241,20 @@ function remover(i){
   atualizar();
 }
 
-function abrirCarrinho(){
-  atualizar();
-  carrinhoBox.classList.add("ativo");
-}
-
-function fecharCarrinho(){
-  carrinhoBox.classList.remove("ativo");
-}
+function abrirCarrinho(){atualizar();carrinhoBox.classList.add("ativo")}
+function fecharCarrinho(){carrinhoBox.classList.remove("ativo")}
 
 document.getElementById("tipoEntrega").addEventListener("change",e=>{
-  taxaEntrega = e.target.value==="jacira" ? 4 : 0;
+  if(e.target.value==="jacira"){
+    taxaEntrega=4;
+    tempoEntregaDiv.innerText="⏱️ Entrega estimada: 30 a 45 minutos";
+  }else if(e.target.value==="retirada"){
+    taxaEntrega=0;
+    tempoEntregaDiv.innerText="⏱️ Retirada estimada: 10 a 15 minutos";
+  }else{
+    taxaEntrega=0;
+    tempoEntregaDiv.innerText="";
+  }
   atualizar();
 });
 
@@ -255,11 +266,9 @@ function finalizar(){
 
   let msg=`🍧 *Pedido Açaí MSM*%0A👤 Cliente: ${nomeCliente.value}%0A`;
 
-  if(tipoEntrega.value==="retirada"){
-    msg+=`📍 Retirada: Rua Érico Veríssimo 159%0A`;
-  }else{
-    msg+=`🏠 Endereço: ${enderecoCliente.value}%0A🚚 Entrega Jardim Jacira: R$ 4,00%0A`;
-  }
+  msg+= tipoEntrega.value==="retirada"
+    ? `📍 Retirada: Rua Érico Veríssimo 159%0A`
+    : `🏠 Endereço: ${enderecoCliente.value}%0A🚚 Entrega Jardim Jacira: R$ 4,00%0A`;
 
   msg+=`%0A🧾 *Itens:*%0A`;
   carrinho.forEach(i=>{
