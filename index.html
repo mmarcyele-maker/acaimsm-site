@@ -281,47 +281,54 @@ function abrirAdmin(){
 function fecharAdmin(){ document.getElementById("adminBox").classList.remove("ativo"); }
 function limparPedidos(){ if(confirm("Limpar todos os pedidos?")){localStorage.removeItem("pedidosSalvos"); pedidosSalvos=[]; abrirAdmin(); } }
 
-  <script>
-  // Pagamento Dinheiro (mostrar / esconder)
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
   const pagamento = document.getElementById("pagamento");
   const pagamentoDinheiro = document.getElementById("pagamentoDinheiro");
 
-  pagamento.addEventListener("change", () => {
-    pagamentoDinheiro.style.display =
-      pagamento.value === "Dinheiro" ? "block" : "none";
-  });
+  if (pagamento && pagamentoDinheiro) {
+    pagamento.addEventListener("change", () => {
+      pagamentoDinheiro.style.display =
+        pagamento.value === "Dinheiro" ? "block" : "none";
+    });
+  }
 
-  // Mostrar campo de troco
   const precisaTroco = document.getElementById("precisaTroco");
   const campoTroco = document.getElementById("campoTroco");
 
-  precisaTroco.addEventListener("change", () => {
-    campoTroco.style.display =
-      precisaTroco.value === "sim" ? "block" : "none";
-  });
+  if (precisaTroco && campoTroco) {
+    precisaTroco.addEventListener("change", () => {
+      campoTroco.style.display =
+        precisaTroco.value === "sim" ? "block" : "none";
+    });
+  }
 
-  // Calcular troco
   const trocoPara = document.getElementById("trocoPara");
   const resultadoTroco = document.getElementById("resultadoTroco");
+  const totalDiv = document.getElementById("totalDiv");
 
-  trocoPara.addEventListener("input", () => {
-    const totalTexto = document.getElementById("totalDiv").innerText;
-    const total = parseFloat(
-      totalTexto.replace("Total: R$", "").replace(",", ".")
-    );
+  if (trocoPara && resultadoTroco && totalDiv) {
+    trocoPara.addEventListener("input", () => {
+      const totalTexto = totalDiv.innerText;
+      const total = parseFloat(
+        totalTexto.replace("Total: R$", "").replace(",", ".")
+      );
 
-    const valorTrocoPara = parseFloat(trocoPara.value);
+      const valorTrocoPara = parseFloat(trocoPara.value);
 
-    if (!valorTrocoPara || valorTrocoPara < total) {
-      resultadoTroco.innerText = "⚠️ Valor insuficiente para troco";
-      return;
-    }
+      if (!valorTrocoPara || valorTrocoPara < total) {
+        resultadoTroco.innerText = "⚠️ Valor insuficiente para troco";
+        return;
+      }
 
-    const troco = valorTrocoPara - total;
-    resultadoTroco.innerText = `Troco: R$ ${troco.toFixed(2)}`;
-  });
+      const troco = valorTrocoPara - total;
+      resultadoTroco.innerText = `Troco: R$ ${troco.toFixed(2)}`;
+    });
+  }
+
+});
 </script>
-
   
 
 </body>
