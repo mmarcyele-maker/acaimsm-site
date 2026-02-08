@@ -280,57 +280,50 @@ function abrirAdmin(){
 }
 function fecharAdmin(){ document.getElementById("adminBox").classList.remove("ativo"); }
 function limparPedidos(){ if(confirm("Limpar todos os pedidos?")){localStorage.removeItem("pedidosSalvos"); pedidosSalvos=[]; abrirAdmin(); } }
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-<script>
-  const pagamento = document.getElementById("pagamento");
-  const pagamentoDinheiro = document.getElementById("pagamentoDinheiro");
-
-  if (pagamento && pagamentoDinheiro) {
-    pagamento.addEventListener("change", () => {
-      pagamentoDinheiro.style.display =
-        pagamento.value === "Dinheiro" ? "block" : "none";
-    });
   }
-
-  const precisaTroco = document.getElementById("precisaTroco");
-  const campoTroco = document.getElementById("campoTroco");
-
-  if (precisaTroco && campoTroco) {
-    precisaTroco.addEventListener("change", () => {
-      campoTroco.style.display =
-        precisaTroco.value === "sim" ? "block" : "none";
-    });
-  }
-
-  const trocoPara = document.getElementById("trocoPara");
-  const resultadoTroco = document.getElementById("resultadoTroco");
-  const totalDiv = document.getElementById("totalDiv");
-
-  if (trocoPara && resultadoTroco && totalDiv) {
-    trocoPara.addEventListener("input", () => {
-      const totalTexto = totalDiv.innerText;
-      const total = parseFloat(
-        totalTexto.replace("Total: R$", "").replace(",", ".")
-      );
-
-      const valorTrocoPara = parseFloat(trocoPara.value);
-
-      if (!valorTrocoPara || valorTrocoPara < total) {
-        resultadoTroco.innerText = "⚠️ Valor insuficiente para troco";
-        return;
-      }
-
-      const troco = valorTrocoPara - total;
-      resultadoTroco.innerText = `Troco: R$ ${troco.toFixed(2)}`;
-    });
-  }
-
-});
   
-</script>
-  
+const pagamento = document.getElementById("pagamento");
+const pagamentoDinheiro = document.getElementById("pagamentoDinheiro");
 
+if (pagamento && pagamentoDinheiro) {
+  pagamento.addEventListener("change", () => {
+    pagamentoDinheiro.style.display =
+      pagamento.value === "Dinheiro" ? "block" : "none";
+  });
+}
+
+const precisaTroco = document.getElementById("precisaTroco");
+const campoTroco = document.getElementById("campoTroco");
+
+if (precisaTroco && campoTroco) {
+  precisaTroco.addEventListener("change", () => {
+    campoTroco.style.display =
+      precisaTroco.value === "sim" ? "block" : "none";
+  });
+}
+
+const trocoPara = document.getElementById("trocoPara");
+const resultadoTroco = document.getElementById("resultadoTroco");
+const totalDiv = document.getElementById("totalDiv");
+
+if (trocoPara && resultadoTroco && totalDiv) {
+  trocoPara.addEventListener("input", () => {
+    const totalTexto = totalDiv.innerText;
+    const total = parseFloat(
+      totalTexto.replace("Total: R$", "").replace(",", ".")
+    );
+
+    const valorTrocoPara = parseFloat(trocoPara.value);
+
+    if (!valorTrocoPara || valorTrocoPara < total) {
+      resultadoTroco.innerText = "⚠️ Valor insuficiente para troco";
+      return;
+    }
+
+    const troco = valorTrocoPara - total;
+    resultadoTroco.innerText = `Troco: R$ ${troco.toFixed(2)}`;
+  });
+  }
+  </script>
 </body>
 </html>
