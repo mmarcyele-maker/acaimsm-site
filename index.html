@@ -8,14 +8,14 @@
 <style>
 body{
   margin:0;
-  font-family: 'Segoe UI', sans-serif;
-  background:#f3f3f3;
+  font-family: Arial, sans-serif;
+  background:#f2f2f2;
 }
 
 header{
   background:linear-gradient(90deg,#6a00ff,#a100ff);
   color:white;
-  padding:20px;
+  padding:18px;
   text-align:center;
   font-size:22px;
   font-weight:bold;
@@ -27,269 +27,241 @@ header{
 
 .card{
   background:white;
-  border-radius:18px;
+  border-radius:15px;
   padding:15px;
   margin-bottom:20px;
-  box-shadow:0 6px 18px rgba(0,0,0,0.08);
-  transition:0.3s;
+  box-shadow:0 4px 12px rgba(0,0,0,0.1);
 }
 
-.card:hover{
-  transform:scale(1.02);
-}
-
-.produto-img{
+.card img{
   width:100%;
-  height:240px;
-  border-radius:16px;
+  border-radius:15px;
 }
 
 .preco{
   color:#6a00ff;
   font-weight:bold;
   font-size:18px;
-}
-
-.adicionais label{
-  display:block;
-  margin-top:6px;
+  margin:10px 0;
 }
 
 button{
-  background:#6a00ff;
+  background:linear-gradient(90deg,#6a00ff,#a100ff);
   color:white;
   border:none;
   padding:12px;
   width:100%;
-  border-radius:12px;
+  border-radius:10px;
   font-size:15px;
-  margin-top:10px;
   cursor:pointer;
 }
 
-#btnCarrinho{
+button:hover{
+  opacity:0.9;
+}
+
+#carrinhoIcon{
   position:fixed;
   bottom:20px;
   right:20px;
   background:#6a00ff;
   color:white;
+  padding:15px;
   border-radius:50px;
-  padding:15px 20px;
-  font-size:16px;
   cursor:pointer;
 }
 
 #contador{
   background:red;
-  padding:3px 8px;
   border-radius:50%;
+  padding:3px 7px;
   font-size:12px;
   margin-left:5px;
 }
 
 #carrinho{
   position:fixed;
-  top:0;
   right:-100%;
+  top:0;
   width:90%;
-  max-width:400px;
   height:100%;
   background:white;
-  padding:20px;
+  box-shadow:-4px 0 10px rgba(0,0,0,0.2);
   transition:0.4s;
+  padding:20px;
   overflow:auto;
-  box-shadow:-4px 0 20px rgba(0,0,0,0.2);
 }
 
 #carrinho.ativo{
   right:0;
 }
 
-select, input{
-  width:100%;
-  padding:10px;
-  margin-top:8px;
-  border-radius:8px;
-  border:1px solid #ccc;
-}
-
-#trocoCampo{
-  display:none;
-}
-
 .total{
   font-weight:bold;
-  margin-top:10px;
   font-size:18px;
+  margin-top:10px;
+}
+
+select,input[type="text"]{
+  width:100%;
+  padding:8px;
+  margin-top:5px;
+  margin-bottom:10px;
 }
 </style>
 </head>
+
 <body>
 
 <header>AÇAÍ BATIDO MSM</header>
 
 <div class="container">
 
-<!-- IMAGEM REALISTA SVG -->
+<!-- 300ML -->
 <div class="card">
-<img class="produto-img" src="data:image/svg+xml;utf8,
-<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'>
-<defs>
-<linearGradient id='g1' x1='0' y1='0' x2='0' y2='1'>
-<stop offset='0%' stop-color='%238b3fbf'/>
-<stop offset='100%' stop-color='%234b136e'/>
-</linearGradient>
-</defs>
-<rect width='100%' height='100%' fill='%23f3f3f3'/>
-<ellipse cx='200' cy='330' rx='80' ry='20' fill='rgba(0,0,0,0.2)'/>
-<rect x='130' y='80' width='140' height='240' rx='40' fill='url(%23g1)'/>
-<rect x='155' y='50' width='90' height='50' rx='15' fill='%23330055'/>
-<rect x='170' y='100' width='15' height='180' fill='rgba(255,255,255,0.2)'/>
-<text x='200' y='210' font-size='26' text-anchor='middle' fill='white' font-family='Arial'>AÇAÍ</text>
-<text x='200' y='240' font-size='22' text-anchor='middle' fill='white' font-family='Arial'>MSM</text>
-</svg>">
-
+<img src="https://images.unsplash.com/photo-1625944525533-473f1d9a6c3c?auto=format&fit=crop&w=800&q=80">
 <h3>300ml</h3>
 <div class="preco">R$ 14,00</div>
 
-<div class="adicionais">
-<label><input type="checkbox" value="Paçoca" data-preco="2"> Paçoca R$2,00</label>
-<label><input type="checkbox" value="Leite em pó" data-preco="3"> Leite em pó R$3,00</label>
-<label><input type="checkbox" value="Leite condensado" data-preco="2"> Leite condensado R$2,00</label>
+<label><input type="checkbox" value="2" data-nome="Paçoca"> Paçoca R$2,00</label><br>
+<label><input type="checkbox" value="3" data-nome="Leite em pó"> Leite em pó R$3,00</label><br>
+<label><input type="checkbox" value="2" data-nome="Leite condensado"> Leite condensado R$2,00</label><br><br>
+
+<button onclick="adicionarItem('300ml',14,this)">Adicionar</button>
 </div>
 
-<button onclick="adicionarCarrinho('300ml',14,this)">Adicionar</button>
-</div>
-
+<!-- 500ML -->
 <div class="card">
-<img class="produto-img" src="data:image/svg+xml;utf8,
-<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'>
-<defs>
-<linearGradient id='g2' x1='0' y1='0' x2='0' y2='1'>
-<stop offset='0%' stop-color='%238b3fbf'/>
-<stop offset='100%' stop-color='%234b136e'/>
-</linearGradient>
-</defs>
-<rect width='100%' height='100%' fill='%23f3f3f3'/>
-<ellipse cx='200' cy='330' rx='80' ry='20' fill='rgba(0,0,0,0.2)'/>
-<rect x='130' y='80' width='140' height='240' rx='40' fill='url(%23g2)'/>
-<rect x='155' y='50' width='90' height='50' rx='15' fill='%23330055'/>
-<rect x='170' y='100' width='15' height='180' fill='rgba(255,255,255,0.2)'/>
-<text x='200' y='210' font-size='26' text-anchor='middle' fill='white' font-family='Arial'>AÇAÍ</text>
-<text x='200' y='240' font-size='22' text-anchor='middle' fill='white' font-family='Arial'>MSM</text>
-</svg>">
-
+<img src="https://images.unsplash.com/photo-1625944525533-473f1d9a6c3c?auto=format&fit=crop&w=800&q=80">
 <h3>500ml</h3>
 <div class="preco">R$ 18,00</div>
 
-<div class="adicionais">
-<label><input type="checkbox" value="Paçoca" data-preco="2"> Paçoca R$2,00</label>
-<label><input type="checkbox" value="Leite em pó" data-preco="3"> Leite em pó R$3,00</label>
-<label><input type="checkbox" value="Leite condensado" data-preco="2"> Leite condensado R$2,00</label>
+<label><input type="checkbox" value="2" data-nome="Paçoca"> Paçoca R$2,00</label><br>
+<label><input type="checkbox" value="3" data-nome="Leite em pó"> Leite em pó R$3,00</label><br>
+<label><input type="checkbox" value="2" data-nome="Leite condensado"> Leite condensado R$2,00</label><br><br>
+
+<button onclick="adicionarItem('500ml',18,this)">Adicionar</button>
 </div>
 
-<button onclick="adicionarCarrinho('500ml',18,this)">Adicionar</button>
 </div>
 
-</div>
-
-<div id="btnCarrinho" onclick="abrirCarrinho()">
-🛒 Carrinho <span id="contador">0</span>
-</div>
-
+<!-- CARRINHO -->
 <div id="carrinho">
-<h3>Seu Pedido</h3>
-<div id="itens"></div>
+<h2>Seu Pedido</h2>
+<div id="lista"></div>
 
-<div class="total">Total: R$ <span id="total">0</span></div>
-
-<label>Entrega:</label>
-<select id="entrega">
-<option value="0">Retirada no local</option>
-<option value="4">Entrega Jardim Jacira (+4)</option>
+<h3>Entrega</h3>
+<select id="entrega" onchange="calcularTotal()">
+<option value="0">Retirada - Grátis</option>
+<option value="4">Entrega Jardim Jacira - R$4,00</option>
 </select>
 
-<label>Pagamento:</label>
+<h3>Pagamento</h3>
 <select id="pagamento" onchange="mostrarTroco()">
 <option>Pix</option>
 <option>Dinheiro</option>
 </select>
 
-<div id="trocoCampo">
-<label>Troco para quanto?</label>
-<input type="number" id="troco">
+<div id="trocoDiv" style="display:none;">
+Troco para:
+<input type="text" id="troco">
 </div>
 
-<button onclick="enviarWhats()">Finalizar Pedido</button>
+<div class="total" id="total">Total: R$ 0</div>
+
+<button onclick="finalizar()">Finalizar Pedido</button>
+<br><br>
+<button onclick="fecharCarrinho()">Fechar</button>
+</div>
+
+<!-- BOTÃO FLUTUANTE -->
+<div id="carrinhoIcon" onclick="abrirCarrinho()">
+🛒 <span id="contador">0</span>
 </div>
 
 <script>
 let carrinho = [];
+let total = 0;
 
-function adicionarCarrinho(nome, preco, botao){
+function adicionarItem(nome, preco, botao){
   let card = botao.parentElement;
-  let adicionais = card.querySelectorAll("input:checked");
-  let lista = [];
-  let totalItem = preco;
+  let adicionais = card.querySelectorAll("input[type=checkbox]:checked");
+  let listaAdicionais = [];
+  let valorAdicionais = 0;
 
-  adicionais.forEach(a=>{
-    lista.push(a.value);
-    totalItem += parseFloat(a.dataset.preco);
+  adicionais.forEach(item=>{
+    listaAdicionais.push(item.dataset.nome);
+    valorAdicionais += parseFloat(item.value);
+    item.checked = false;
   });
 
-  carrinho.push({nome, lista, totalItem});
+  carrinho.push({
+    nome:nome,
+    preco:preco,
+    adicionais:listaAdicionais,
+    totalItem: preco + valorAdicionais
+  });
+
   atualizarCarrinho();
-  adicionais.forEach(a=>a.checked=false);
 }
 
 function atualizarCarrinho(){
-  let itensDiv = document.getElementById("itens");
-  itensDiv.innerHTML="";
-  let total=0;
+  let lista = document.getElementById("lista");
+  lista.innerHTML="";
+  total=0;
 
   carrinho.forEach(item=>{
-    itensDiv.innerHTML += `<p>${item.nome} - R$${item.totalItem}</p>`;
-    if(item.lista.length){
-      itensDiv.innerHTML += `<small>Adicionais: ${item.lista.join(", ")}</small><br><br>`;
-    }
+    lista.innerHTML += `<p>${item.nome} - R$ ${item.totalItem.toFixed(2)}<br>
+    <small>${item.adicionais.join(", ")}</small></p>`;
     total += item.totalItem;
   });
 
-  document.getElementById("contador").innerText=carrinho.length;
-  document.getElementById("total").innerText=total;
+  document.getElementById("contador").innerText = carrinho.length;
+  calcularTotal();
+}
+
+function calcularTotal(){
+  let entrega = parseFloat(document.getElementById("entrega").value);
+  let totalFinal = total + entrega;
+  document.getElementById("total").innerText = "Total: R$ " + totalFinal.toFixed(2);
 }
 
 function abrirCarrinho(){
-  document.getElementById("carrinho").classList.toggle("ativo");
+  document.getElementById("carrinho").classList.add("ativo");
+}
+
+function fecharCarrinho(){
+  document.getElementById("carrinho").classList.remove("ativo");
 }
 
 function mostrarTroco(){
   let pagamento = document.getElementById("pagamento").value;
-  document.getElementById("trocoCampo").style.display =
-  pagamento==="Dinheiro" ? "block" : "none";
+  document.getElementById("trocoDiv").style.display =
+  pagamento === "Dinheiro" ? "block" : "none";
 }
 
-function enviarWhats(){
-  let total = parseFloat(document.getElementById("total").innerText);
-  let entrega = document.getElementById("entrega");
-  let taxa = parseFloat(entrega.value);
-  let tipoEntrega = entrega.options[entrega.selectedIndex].text;
+function finalizar(){
+  let entregaTexto = document.getElementById("entrega").selectedOptions[0].text;
   let pagamento = document.getElementById("pagamento").value;
   let troco = document.getElementById("troco").value;
 
-  let totalFinal = total + taxa;
+  let mensagem="Pedido:%0A";
 
-  let mensagem="🍇 Pedido Açaí Batido MSM%0A%0A";
-  mensagem += document.getElementById("itens").innerText + "%0A";
-  mensagem += "Entrega: "+ tipoEntrega +"%0A";
-  mensagem += "Total: R$"+ totalFinal +"%0A";
-  mensagem += "Pagamento: "+ pagamento +"%0A";
+  carrinho.forEach(item=>{
+    mensagem += `${item.nome} - R$ ${item.totalItem.toFixed(2)}%0A`;
+    if(item.adicionais.length>0){
+      mensagem += `Adicionais: ${item.adicionais.join(", ")}%0A`;
+    }
+  });
+
+  mensagem += `%0A${entregaTexto}%0A`;
+  mensagem += `Pagamento: ${pagamento}%0A`;
 
   if(pagamento==="Dinheiro" && troco){
-    mensagem += "Troco para: R$"+troco+"%0A";
+    mensagem += `Troco para: R$ ${troco}%0A`;
   }
 
-  mensagem += "%0A📍 Rua Érico Veríssimo 159";
+  mensagem += `%0ATotal Final`;
 
   window.open("https://wa.me/551194381832?text="+mensagem);
 }
