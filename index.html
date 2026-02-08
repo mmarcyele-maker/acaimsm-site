@@ -285,8 +285,12 @@ function finalizar(){
   localStorage.setItem("pedidosSalvos",JSON.stringify(pedidosSalvos));
 
   let msg=`🍧 Pedido Açaí MSM\nCliente: ${nomeCliente.value}\n`;
-  msg+=tipoEntrega.value==="retirada"?`📍 Retirada: Rua Érico Veríssimo 159\n`:`🚚 Entrega Jardim Jacira (+R$4)\n`;
-  msg+="\n🧾 Itens:\n";
+  if (tipoEntrega.value === "retirada") {
+  msg += `📍 Retirada: Rua Érico Veríssimo 159\n`;
+} else {
+  msg += `🚚 Entrega Jardim Jacira (+R$4)\n`;
+  msg += `📍 Endereço: ${enderecoCliente.value}\n`;
+}
   carrinho.forEach(i=>{
     msg+=`• ${i.nome} x${i.qtd} – R$ ${i.sub.toFixed(2)}\n`;
     if(i.adicionais.length) msg+=`  ➕ ${i.adicionais.join("\n")}\n`;
