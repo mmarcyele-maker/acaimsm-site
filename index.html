@@ -5,71 +5,89 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Açaí Batido MSM</title>
 
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#7b2cbf">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 body{
 margin:0;
-font-family:Arial;
-background:linear-gradient(180deg,#3a0ca3,#7209b7);
-color:white;
+font-family:'Poppins',sans-serif;
+background:#f5f5f5;
 }
 
 header{
-padding:20px;
+background:linear-gradient(135deg,#4b007d,#8e2de2);
+padding:30px 20px;
+color:white;
 text-align:center;
-font-size:22px;
-font-weight:bold;
 }
 
-.produto{
-background:#ffffff10;
-margin:15px;
+header h1{
+margin:0;
+font-size:28px;
+}
+
+.container{
+padding:20px;
+}
+
+.card{
+background:white;
+border-radius:18px;
+box-shadow:0 8px 20px rgba(0,0,0,0.1);
+overflow:hidden;
+margin-bottom:20px;
+transition:0.3s;
+}
+
+.card img{
+width:100%;
+height:220px;
+object-fit:cover;
+}
+
+.card-content{
 padding:15px;
-border-radius:15px;
-backdrop-filter:blur(10px);
 }
 
-button{
-background:#ffbe0b;
+.title{
+font-weight:600;
+font-size:18px;
+}
+
+.price{
+color:#4b007d;
+font-size:20px;
+font-weight:700;
+margin:10px 0;
+}
+
+.btn{
+background:#8e2de2;
+color:white;
 border:none;
-padding:10px;
-border-radius:8px;
-font-weight:bold;
+padding:12px;
+width:100%;
+border-radius:12px;
+font-weight:600;
 cursor:pointer;
+transition:0.3s;
 }
 
-.carrinho-btn{
+.btn:hover{
+background:#4b007d;
+}
+
+.cart-btn{
 position:fixed;
 bottom:20px;
 right:20px;
-background:#ff006e;
-width:60px;
-height:60px;
-border-radius:50%;
+background:#8e2de2;
 color:white;
+padding:15px;
+border-radius:50%;
 font-size:20px;
-display:flex;
-align-items:center;
-justify-content:center;
-box-shadow:0 5px 20px #00000080;
-}
-
-.carrinho{
-position:fixed;
-top:0;
-right:-100%;
-width:80%;
-height:100%;
-background:#240046;
-transition:0.4s;
-padding:20px;
-overflow:auto;
-}
-
-.carrinho.aberto{
-right:0;
+box-shadow:0 5px 15px rgba(0,0,0,0.3);
+cursor:pointer;
 }
 </style>
 </head>
@@ -77,126 +95,48 @@ right:0;
 <body>
 
 <header>
-<img src="icon-512.png" width="120"><br>
-Açaí Batido MSM
+<h1>Açaí Batido MSM</h1>
+<p>300ml e 500ml • Faça seu pedido</p>
 </header>
 
-<div class="produto">
-<h3>300ml - R$14</h3>
-<button onclick="addCarrinho('300ml',14)">Adicionar</button>
+<div class="container">
+
+<div class="card">
+<img src="SUA-IMAGEM-AQUI.jpg">
+<div class="card-content">
+<div class="title">Açaí 300ml</div>
+<div class="price">R$ 14,00</div>
+<button class="btn" onclick="addCart('300ml',14)">Adicionar</button>
+</div>
 </div>
 
-<div class="produto">
-<h3>500ml - R$18</h3>
-<button onclick="addCarrinho('500ml',18)">Adicionar</button>
+<div class="card">
+<img src="SUA-IMAGEM-AQUI.jpg">
+<div class="card-content">
+<div class="title">Açaí 500ml</div>
+<div class="price">R$ 18,00</div>
+<button class="btn" onclick="addCart('500ml',18)">Adicionar</button>
+</div>
 </div>
 
-<div class="produto">
-<h3>Adicionais</h3>
-<button onclick="addCarrinho('Leite em pó',3)">+ Leite em pó R$3</button><br><br>
-<button onclick="addCarrinho('Leite condensado',2)">+ Leite condensado R$2</button><br><br>
-<button onclick="addCarrinho('Paçoca',2)">+ Paçoca R$2</button>
 </div>
 
-<div class="carrinho-btn" onclick="abrirCarrinho()">🛒</div>
-
-<div class="carrinho" id="carrinho">
-<h2>Seu Pedido</h2>
-<div id="lista"></div>
-<h3 id="total"></h3>
-<button onclick="enviar()">Enviar Pedido</button>
-<button onclick="fecharCarrinho()">Fechar</button>
-</div>
+<div class="cart-btn" onclick="sendWhats()">🛒</div>
 
 <script>
-let carrinho=[];
+let cart=[];
 
-function addCarrinho(nome,preco){
-carrinho.push({nome,preco});
-atualizar();
-new Audio("https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg").play();
+function addCart(tamanho,valor){
+cart.push(tamanho+" - R$"+valor);
+alert("Adicionado ao carrinho!");
 }
 
-function atualizar(){
-let lista=document.getElementById("lista");
-lista.innerHTML="";
-let total=0;
-carrinho.forEach(item=>{
-lista.innerHTML+=item.nome+" - R$"+item.preco+"<br>";
-total+=item.preco;
-});
-document.getElementById("total").innerText="Total: R$"+total;
-localStorage.setItem("pedido",JSON.stringify(carrinho));
-}
-
-function abrirCarrinho(){
-document.getElementById("carrinho").classList.add("aberto");
-}
-
-function fecharCarrinho(){
-document.getElementById("carrinho").classList.remove("aberto");
-}
-
-function enviar(){
-let pedido="Pedido:%0A";
-let total=0;
-carrinho.forEach(item=>{
-pedido+=item.nome+" - R$"+item.preco+"%0A";
-total+=item.preco;
-});
-pedido+="Total: R$"+total;
-window.open("https://wa.me/5511943818352?text="+pedido);
-}
-
-if(localStorage.getItem("pedido")){
-carrinho=JSON.parse(localStorage.getItem("pedido"));
-atualizar();
-}
-
-if('serviceWorker' in navigator){
-navigator.serviceWorker.register('service-worker.js');
+function sendWhats(){
+let msg="Pedido Açaí MSM:%0A";
+cart.forEach(i=> msg+=i+"%0A");
+window.open("https://wa.me/5511943818352?text="+msg);
 }
 </script>
 
 </body>
 </html>
-{
-  "name": "Açaí Batido MSM",
-  "short_name": "Açaí MSM",
-  "start_url": "/acaimsm-site/",
-  "display": "standalone",
-  "background_color": "#3a0ca3",
-  "theme_color": "#7209b7",
-  "icons": [
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
-}
-self.addEventListener('install',e=>{
-e.waitUntil(
-caches.open('acai-cache').then(cache=>{
-return cache.addAll([
-'/acaimsm-site/',
-'/acaimsm-site/index.html',
-'/acaimsm-site/icon-192.png',
-'/acaimsm-site/icon-512.png'
-]);
-})
-);
-});
-
-self.addEventListener('fetch',e=>{
-e.respondWith(
-caches.match(e.request).then(resp=>{
-return resp || fetch(e.request);
-})
-);
-});
