@@ -6,148 +6,29 @@
 <title>Açaí Batido MSM</title>
 
 <style>
-body{
-  margin:0;
-  font-family: Arial, sans-serif;
-  background:#f2f2f2;
-}
+body{margin:0;font-family:Arial,sans-serif;background:#f2f2f2}
+header{background:linear-gradient(90deg,#6a00ff,#a100ff);color:white;padding:18px;text-align:center;font-size:22px;font-weight:bold}
+.container{padding:15px}
+.card{background:white;border-radius:15px;padding:15px;margin-bottom:20px;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+.card-conteudo{display:flex;gap:12px;align-items:center}
+.card-conteudo img{width:120px;height:120px;object-fit:contain;border-radius:12px;border:2px solid #6a00ff}
+.card-info{flex:1}
+.preco{color:#6a00ff;font-weight:bold;font-size:18px}
+.quantidade{display:flex;align-items:center;gap:10px;margin:8px 0}
+.quantidade button{width:32px;height:32px;border:none;border-radius:50%;background:#6a00ff;color:white;font-size:18px;cursor:pointer}
+.adicional{display:flex;justify-content:space-between;align-items:center;margin:6px 0}
+.botao-add{background:linear-gradient(90deg,#6a00ff,#a100ff);color:white;border:none;padding:12px;width:100%;border-radius:10px;font-size:15px;cursor:pointer;margin-top:10px}
 
-header{
-  background:linear-gradient(90deg,#6a00ff,#a100ff);
-  color:white;
-  padding:18px;
-  text-align:center;
-  font-size:22px;
-  font-weight:bold;
-}
-
-.container{ padding:15px; }
-
-.card{
-  background:white;
-  border-radius:15px;
-  padding:15px;
-  margin-bottom:20px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.1);
-}
-
-.card-conteudo{
-  display:flex;
-  gap:12px;
-  align-items:center;
-}
-
-.card-conteudo img{
-  width:120px;
-  height:120px;
-  object-fit:contain;
-  border-radius:12px;
-  border:2px solid #6a00ff;
-}
-
-.card-info{ flex:1; }
-
-.preco{
-  color:#6a00ff;
-  font-weight:bold;
-  font-size:18px;
-}
-
-.quantidade{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin:8px 0;
-}
-
-.quantidade button{
-  width:32px;
-  height:32px;
-  border:none;
-  border-radius:50%;
-  background:#6a00ff;
-  color:white;
-  font-size:18px;
-  cursor:pointer;
-}
-
-.adicional{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin:6px 0;
-}
-
-.botao-add{
-  background:linear-gradient(90deg,#6a00ff,#a100ff);
-  color:white;
-  border:none;
-  padding:12px;
-  width:100%;
-  border-radius:10px;
-  font-size:15px;
-  cursor:pointer;
-  margin-top:10px;
-}
-
-/* CARRINHO */
-#carrinhoIcon{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  background:#6a00ff;
-  color:white;
-  padding:15px;
-  border-radius:50px;
-  cursor:pointer;
-}
-
-#contador{
-  background:red;
-  border-radius:50%;
-  padding:3px 7px;
-  font-size:12px;
-  margin-left:5px;
-}
-
-#carrinho{
-  position:fixed;
-  right:-100%;
-  top:0;
-  width:90%;
-  height:100%;
-  background:white;
-  transition:0.4s;
-  padding:20px;
-  overflow:auto;
-}
-
-#carrinho.ativo{ right:0; }
-
-.item-carrinho{
-  border-bottom:1px solid #ddd;
-  padding:8px 0;
-}
-
-.remover{
-  color:red;
-  cursor:pointer;
-  font-size:13px;
-}
-
-.total{
-  font-weight:bold;
-  font-size:18px;
-  margin-top:10px;
-}
-
-input{
-  width:100%;
-  padding:10px;
-  margin:6px 0 12px;
-  border-radius:8px;
-  border:1px solid #ccc;
-}
+/* Carrinho */
+#carrinhoIcon{position:fixed;bottom:20px;right:20px;background:#6a00ff;color:white;padding:15px;border-radius:50px;cursor:pointer}
+#contador{background:red;border-radius:50%;padding:3px 7px;font-size:12px;margin-left:5px}
+#carrinho{position:fixed;right:-100%;top:0;width:90%;height:100%;background:white;transition:.4s;padding:20px;overflow:auto}
+#carrinho.ativo{right:0}
+.item-carrinho{border-bottom:1px solid #ddd;padding:8px 0}
+.remover{color:red;cursor:pointer;font-size:13px}
+.total{font-weight:bold;font-size:18px;margin-top:10px}
+input,select,textarea{width:100%;padding:10px;margin:6px 0 12px;border-radius:8px;border:1px solid #ccc}
+textarea{resize:none}
 </style>
 </head>
 
@@ -157,14 +38,13 @@ input{
 
 <div class="container">
 
-<!-- PRODUTO -->
-<div class="card" data-nome="300ml" data-preco="14">
+<!-- 300ml -->
+<div class="card" data-nome="Açaí 300ml" data-preco="14">
   <div class="card-conteudo">
     <img src="./1770533878737.png">
     <div class="card-info">
       <h3>300ml</h3>
       <div class="preco">R$ 14,00</div>
-
       <div class="quantidade">
         <button onclick="alterarQtd(this,-1)">−</button>
         <span class="qtd">1</span>
@@ -185,7 +65,7 @@ input{
   </div>
 
   <div class="adicional" data-nome="Leite em pó" data-preco="3">
-    <span>Leite em pó R$2,00</span>
+    <span>Leite em pó R$3,00</span>
     <div class="quantidade">
       <button onclick="alterarQtd(this,-1)">−</button>
       <span class="qtd">0</span>
@@ -194,24 +74,24 @@ input{
   </div>
 
   <div class="adicional" data-nome="Leite condensado" data-preco="3">
-    <span>Leite condensado R$2,00</span>
+    <span>Leite condensado R$3,00</span>
     <div class="quantidade">
       <button onclick="alterarQtd(this,-1)">−</button>
       <span class="qtd">0</span>
       <button onclick="alterarQtd(this,1)">+</button>
     </div>
   </div>
+
   <button class="botao-add" onclick="adicionarCarrinho(this)">Adicionar</button>
 </div>
 
-<!-- PRODUTO -->
-<div class="card" data-nome="500ml" data-preco="14">
+<!-- 500ml -->
+<div class="card" data-nome="Açaí 500ml" data-preco="18">
   <div class="card-conteudo">
     <img src="./1770533878737.png">
     <div class="card-info">
       <h3>500ml</h3>
       <div class="preco">R$ 18,00</div>
-
       <div class="quantidade">
         <button onclick="alterarQtd(this,-1)">−</button>
         <span class="qtd">1</span>
@@ -219,8 +99,6 @@ input{
       </div>
     </div>
   </div>
-
-
 
   <h4>Adicionais</h4>
 
@@ -234,7 +112,7 @@ input{
   </div>
 
   <div class="adicional" data-nome="Leite em pó" data-preco="3">
-    <span>Leite em pó R$2,00</span>
+    <span>Leite em pó R$3,00</span>
     <div class="quantidade">
       <button onclick="alterarQtd(this,-1)">−</button>
       <span class="qtd">0</span>
@@ -243,140 +121,120 @@ input{
   </div>
 
   <div class="adicional" data-nome="Leite condensado" data-preco="3">
-    <span>Leite condensado R$2,00</span>
+    <span>Leite condensado R$3,00</span>
     <div class="quantidade">
       <button onclick="alterarQtd(this,-1)">−</button>
       <span class="qtd">0</span>
       <button onclick="alterarQtd(this,1)">+</button>
     </div>
   </div>
-  
+
   <button class="botao-add" onclick="adicionarCarrinho(this)">Adicionar</button>
 </div>
 
-  
 </div>
 
-<!-- CARRINHO -->
+<!-- Carrinho -->
 <div id="carrinho">
 <h2>Seu Pedido</h2>
 
-<label>Nome:</label>
-<input type="text" id="nomeCliente" placeholder="Digite seu nome">
+<input id="nomeCliente" placeholder="Nome">
+<input id="enderecoCliente" placeholder="Endereço">
+<select id="tipoEntrega">
+  <option value="">Forma de entrega</option>
+  <option value="retirada">Retirada grátis</option>
+  <option value="jacira">Entrega Jardim Jacira (+R$4)</option>
+</select>
 
-<label>Endereço:</label>
-<input type="text" id="enderecoCliente" placeholder="Rua, número, bairro">
+<select id="pagamento">
+  <option value="">Forma de pagamento</option>
+  <option>Pix</option>
+  <option>Dinheiro</option>
+</select>
+
+<input id="troco" placeholder="Troco para quanto? (se dinheiro)">
+<textarea id="obs" placeholder="Observações do pedido"></textarea>
 
 <div id="lista"></div>
-
 <div class="total" id="total">Total: R$ 0</div>
 
-<button onclick="finalizar()">Finalizar no WhatsApp</button>
-<br><br>
+<button onclick="finalizar()">Finalizar no WhatsApp</button><br><br>
 <button onclick="fecharCarrinho()">Fechar</button>
 </div>
 
-<div id="carrinhoIcon" onclick="abrirCarrinho()">
-🛒 <span id="contador">0</span>
-</div>
+<div id="carrinhoIcon" onclick="abrirCarrinho()">🛒 <span id="contador">0</span></div>
 
 <script>
-let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
-let total = JSON.parse(localStorage.getItem("total")) || 0;
+let carrinho=[], total=0;
 
-function alterarQtd(btn,valor){
-  let span=btn.parentElement.querySelector(".qtd");
-  let qtd=parseInt(span.innerText)+valor;
-  if(qtd<0) qtd=0;
-  span.innerText=qtd;
+function alterarQtd(btn,v){
+ let s=btn.parentElement.querySelector(".qtd");
+ let n=parseInt(s.innerText)+v;
+ if(n<0)n=0;
+ s.innerText=n;
 }
 
-function adicionarCarrinho(botao){
-  let card=botao.closest(".card");
-  let nome=card.dataset.nome;
-  let preco=parseFloat(card.dataset.preco);
-  let qtd=parseInt(card.querySelector(".card-info .qtd").innerText);
-  if(qtd===0) return;
+function adicionarCarrinho(b){
+ let c=b.closest(".card");
+ let nome=c.dataset.nome;
+ let preco=+c.dataset.preco;
+ let qtd=+c.querySelector(".card-info .qtd").innerText;
+ if(!qtd)return;
 
-  let adicionais=[];
-  let subtotal=qtd*preco;
+ let adicionais=[], sub=qtd*preco;
 
-  card.querySelectorAll(".adicional").forEach(add=>{
-    let q=parseInt(add.querySelector(".qtd").innerText);
-    if(q>0){
-      subtotal+=q*parseFloat(add.dataset.preco);
-      adicionais.push(`${add.dataset.nome} x${q}`);
-      add.querySelector(".qtd").innerText=0;
-    }
-  });
+ c.querySelectorAll(".adicional").forEach(a=>{
+  let q=+a.querySelector(".qtd").innerText;
+  if(q){
+   sub+=q*a.dataset.preco*qtd;
+   adicionais.push(`${a.dataset.nome} x${q*qtd}`);
+   a.querySelector(".qtd").innerText=0;
+  }
+ });
 
-  carrinho.push({nome,qtd,adicionais,subtotal});
-  total+=subtotal;
-
-  card.querySelector(".card-info .qtd").innerText=1;
-  salvar();
-  atualizarCarrinho();
+ carrinho.push({nome,qtd,adicionais,sub});
+ total+=sub;
+ c.querySelector(".card-info .qtd").innerText=1;
+ atualizar();
 }
 
-function atualizarCarrinho(){
-  let lista=document.getElementById("lista");
-  lista.innerHTML="";
-  carrinho.forEach((item,i)=>{
-    lista.innerHTML+=`
-      <div class="item-carrinho">
-        <strong>${item.nome} x${item.qtd}</strong><br>
-        ${item.adicionais.join(", ")}<br>
-        R$ ${item.subtotal.toFixed(2)}<br>
-        <span class="remover" onclick="removerItem(${i})">Remover</span>
-      </div>
-    `;
-  });
-  document.getElementById("contador").innerText=carrinho.length;
-  document.getElementById("total").innerText="Total: R$ "+total.toFixed(2);
+function atualizar(){
+ let l=document.getElementById("lista");
+ l.innerHTML="";
+ let itens=0;
+ carrinho.forEach((i,n)=>{
+  itens+=i.qtd;
+  l.innerHTML+=`
+   <div class="item-carrinho">
+    <b>${i.nome} x${i.qtd}</b><br>
+    ${i.adicionais.join(", ")}<br>
+    R$ ${i.sub.toFixed(2)}<br>
+    <span class="remover" onclick="remover(${n})">Remover</span>
+   </div>`;
+ });
+ document.getElementById("contador").innerText=itens;
+ document.getElementById("total").innerText="Total: R$ "+total.toFixed(2);
 }
 
-function removerItem(i){
-  total-=carrinho[i].subtotal;
-  carrinho.splice(i,1);
-  salvar();
-  atualizarCarrinho();
-}
+function remover(i){ total-=carrinho[i].sub; carrinho.splice(i,1); atualizar(); }
 
-function salvar(){
-  localStorage.setItem("carrinho",JSON.stringify(carrinho));
-  localStorage.setItem("total",JSON.stringify(total));
-}
+function abrirCarrinho(){atualizar();carrinhoBox.classList.add("ativo")}
+function fecharCarrinho(){carrinhoBox.classList.remove("ativo")}
 
-function abrirCarrinho(){
-  atualizarCarrinho();
-  document.getElementById("carrinho").classList.add("ativo");
-}
-
-function fecharCarrinho(){
-  document.getElementById("carrinho").classList.remove("ativo");
-}
+let carrinhoBox=document.getElementById("carrinho");
 
 function finalizar(){
-  let nome=document.getElementById("nomeCliente").value.trim();
-  let endereco=document.getElementById("enderecoCliente").value.trim();
-
-  if(!nome || !endereco){
-    alert("Por favor, informe nome e endereço.");
-    return;
-  }
-
-  let msg=`Pedido Açaí MSM%0A%0ACliente: ${nome}%0AEndereço: ${endereco}%0A%0A`;
-
-  carrinho.forEach(i=>{
-    msg+=`${i.nome} x${i.qtd} - R$ ${i.subtotal.toFixed(2)}%0A`;
-    if(i.adicionais.length>0){
-      msg+=`Adicionais: ${i.adicionais.join(", ")}%0A`;
-    }
-  });
-
-  msg+=`%0ATotal: R$ ${total.toFixed(2)}`;
-
-  window.open("https://wa.me/5511943818352?text="+msg);
+ let nome=nomeCliente.value,end=enderecoCliente.value,ent=tipoEntrega.value,pag=pagamento.value;
+ if(!nome||!ent||!pag){alert("Preencha os dados");return}
+ let taxa=ent==="jacira"?4:0;
+ let msg=`Pedido Açaí MSM%0ACliente: ${nome}%0A`;
+ if(ent==="retirada") msg+=`Retirada: Rua Érico Veríssimo 159%0A`;
+ else msg+=`Endereço: ${end}%0AEntrega Jardim Jacira +R$4%0A`;
+ carrinho.forEach(i=>msg+=`${i.nome} x${i.qtd} - R$ ${i.sub.toFixed(2)}%0A`);
+ if(obs.value) msg+=`Obs: ${obs.value}%0A`;
+ if(pag==="Dinheiro"&&troco.value) msg+=`Troco: ${troco.value}%0A`;
+ msg+=`Pagamento: ${pag}%0ATotal: R$ ${(total+taxa).toFixed(2)}`;
+ window.open("https://wa.me/5511943818352?text="+msg);
 }
 </script>
 
