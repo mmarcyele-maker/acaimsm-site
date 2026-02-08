@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Açaí Batido MSM</title>
+<title>Açaí MSM</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -25,25 +26,35 @@ font-weight:700;
 .produto{
 background:white;
 margin:15px;
-border-radius:16px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
+border-radius:18px;
+box-shadow:0 8px 20px rgba(0,0,0,0.1);
 overflow:hidden;
-cursor:pointer;
 }
 
 .produto img{
 width:100%;
-height:200px;
+height:220px;
 object-fit:cover;
+}
+
+.logo-texto{
+position:absolute;
+bottom:15px;
+left:50%;
+transform:translateX(-50%);
+background:rgba(75,0,125,0.8);
+color:white;
+padding:8px 20px;
+border-radius:30px;
+font-weight:700;
+}
+
+.imagem-container{
+position:relative;
 }
 
 .info{
 padding:15px;
-}
-
-.nome{
-font-weight:600;
-font-size:18px;
 }
 
 .preco{
@@ -52,185 +63,129 @@ font-weight:700;
 font-size:20px;
 }
 
-.modal{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-background:white;
-border-radius:20px 20px 0 0;
-padding:20px;
-display:none;
-box-shadow:0 -5px 20px rgba(0,0,0,0.2);
-}
-
-.adicional{
-display:flex;
-justify-content:space-between;
-margin:10px 0;
-}
-
-.btn{
+button{
 background:#8e2de2;
 color:white;
-padding:15px;
 border:none;
-border-radius:12px;
+padding:12px;
 width:100%;
+border-radius:12px;
 font-weight:600;
-margin-top:15px;
-}
-
-.carrinho{
-position:fixed;
-right:0;
-top:0;
-width:300px;
-height:100%;
-background:white;
-box-shadow:-5px 0 20px rgba(0,0,0,0.2);
-padding:20px;
-display:none;
-overflow:auto;
-}
-
-.cart-button{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#8e2de2;
-color:white;
-padding:15px;
-border-radius:50%;
-font-size:20px;
+margin-top:10px;
 cursor:pointer;
+}
+
+.finalizar{
+margin:20px;
+background:white;
+padding:20px;
+border-radius:18px;
+box-shadow:0 8px 20px rgba(0,0,0,0.1);
+}
+
+input[type="text"]{
+width:100%;
+padding:10px;
+margin-top:10px;
+border-radius:8px;
+border:1px solid #ccc;
 }
 </style>
 </head>
+
 <body>
 
-<header>Açaí Batido MSM</header>
+<header>Açaí MSM</header>
 
-<div class="produto" onclick="abrirModal('300ml',14)">
-<img src="acai.jpg">
+<div class="produto">
+<div class="imagem-container">
+<img src="https://images.unsplash.com/photo-1625944525533-473f1c3e8d4c?auto=format&fit=crop&w=800&q=80">
+<div class="logo-texto">Açaí MSM</div>
+</div>
 <div class="info">
-<div class="nome">Açaí 300ml</div>
+<h3>300ml</h3>
 <div class="preco">R$14,00</div>
+<button onclick="adicionar('300ml - R$14')">Adicionar</button>
 </div>
 </div>
 
-<div class="produto" onclick="abrirModal('500ml',18)">
-<img src="acai.jpg">
+<div class="produto">
+<div class="imagem-container">
+<img src="https://images.unsplash.com/photo-1625944525533-473f1c3e8d4c?auto=format&fit=crop&w=800&q=80">
+<div class="logo-texto">Açaí MSM</div>
+</div>
 <div class="info">
-<div class="nome">Açaí 500ml</div>
+<h3>500ml</h3>
 <div class="preco">R$18,00</div>
+<button onclick="adicionar('500ml - R$18')">Adicionar</button>
 </div>
 </div>
 
-<div class="modal" id="modal">
-<h3 id="tituloProduto"></h3>
+<div class="finalizar">
+<h3>Finalizar Pedido</h3>
 
-<div class="adicional">
-<label><input type="checkbox" value="Leite em pó" data-preco="3" onchange="atualizarPreco()"> Leite em pó</label>
-<span>+R$3</span>
+<label><input type="radio" name="pagamento" value="Pix" onchange="mostrarTroco()"> Pix</label><br>
+<label><input type="radio" name="pagamento" value="Dinheiro" onchange="mostrarTroco()"> Dinheiro</label>
+
+<div id="trocoCampo" style="display:none;">
+<input type="text" id="troco" placeholder="Precisa de troco? Para quanto?">
 </div>
 
-<div class="adicional">
-<label><input type="checkbox" value="Leite condensado" data-preco="2" onchange="atualizarPreco()"> Leite condensado</label>
-<span>+R$2</span>
+<button onclick="enviarPedido()">Enviar Pedido</button>
 </div>
-
-<div class="adicional">
-<label><input type="checkbox" value="Paçoca" data-preco="2" onchange="atualizarPreco()"> Paçoca</label>
-<span>+R$2</span>
-</div>
-
-<button class="btn" onclick="adicionarCarrinho()" id="btnAdicionar">
-Adicionar - R$0
-</button>
-
-</div>
-
-<div class="carrinho" id="carrinho">
-<h3>Seu Pedido</h3>
-<div id="listaCarrinho"></div>
-<hr>
-<strong>Total: R$ <span id="totalCarrinho">0</span></strong>
-<br><br>
-<button class="btn" onclick="enviarPedido()">Finalizar Pedido</button>
-</div>
-
-<div class="cart-button" onclick="abrirCarrinho()">🛒</div>
 
 <script>
-let produtoAtual="";
-let precoBase=0;
-let carrinho=[];
-let total=0;
 
-function abrirModal(nome,preco){
-produtoAtual=nome;
-precoBase=preco;
-document.getElementById("modal").style.display="block";
-document.getElementById("tituloProduto").innerText=nome;
-limparAdicionais();
-atualizarPreco();
+let pedidos=[];
+
+function adicionar(item){
+pedidos.push(item);
+alert("Adicionado!");
 }
 
-function limparAdicionais(){
-document.querySelectorAll(".modal input").forEach(c=>c.checked=false);
+function mostrarTroco(){
+let pagamento=document.querySelector('input[name="pagamento"]:checked').value;
+if(pagamento==="Dinheiro"){
+document.getElementById("trocoCampo").style.display="block";
+}else{
+document.getElementById("trocoCampo").style.display="none";
 }
-
-function atualizarPreco(){
-let soma=precoBase;
-document.querySelectorAll(".modal input:checked").forEach(item=>{
-soma+=parseFloat(item.dataset.preco);
-});
-document.getElementById("btnAdicionar").innerText="Adicionar - R$"+soma;
-}
-
-function adicionarCarrinho(){
-let adicionais=[];
-let valorFinal=precoBase;
-
-document.querySelectorAll(".modal input:checked").forEach(item=>{
-adicionais.push(item.value);
-valorFinal+=parseFloat(item.dataset.preco);
-});
-
-carrinho.push({produto:produtoAtual,valor:valorFinal,adicionais});
-total+=valorFinal;
-
-document.getElementById("modal").style.display="none";
-atualizarCarrinho();
-}
-
-function atualizarCarrinho(){
-let lista="";
-carrinho.forEach(item=>{
-lista+=item.produto+" - R$"+item.valor+"<br>";
-});
-document.getElementById("listaCarrinho").innerHTML=lista;
-document.getElementById("totalCarrinho").innerText=total;
-}
-
-function abrirCarrinho(){
-document.getElementById("carrinho").style.display="block";
 }
 
 function enviarPedido(){
-let msg="🍧 Pedido Açaí MSM:%0A%0A";
-carrinho.forEach(item=>{
-msg+=item.produto+" - R$"+item.valor+"%0A";
-if(item.adicionais.length>0){
-msg+="Adicionais: "+item.adicionais.join(", ")+"%0A";
+
+if(pedidos.length==0){
+alert("Adicione um produto!");
+return;
 }
-msg+="%0A";
+
+let pagamento=document.querySelector('input[name="pagamento"]:checked');
+if(!pagamento){
+alert("Escolha a forma de pagamento!");
+return;
+}
+
+let msg="🍧 Pedido Açaí MSM:%0A%0A";
+
+pedidos.forEach(p=>{
+msg+=p+"%0A";
 });
-msg+="Total: R$"+total;
+
+msg+="%0AForma de pagamento: "+pagamento.value+"%0A";
+
+if(pagamento.value==="Dinheiro"){
+let troco=document.getElementById("troco").value;
+if(troco){
+msg+="Precisa de troco para: R$"+troco+"%0A";
+}else{
+msg+="Sem troco%0A";
+}
+}
 
 window.open("https://wa.me/5511943818352?text="+msg);
+
 }
+
 </script>
 
 </body>
