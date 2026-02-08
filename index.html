@@ -29,6 +29,7 @@ header{background:linear-gradient(90deg,#6a00ff,#a100ff);color:#fff;padding:18px
 .total{font-weight:bold;font-size:18px;margin-top:10px}
 input,select,textarea{width:100%;padding:10px;margin:6px 0 12px;border-radius:8px;border:1px solid #ccc}
 textarea{resize:none}
+.pixBox{background:#f4edff;padding:10px;border-radius:10px;margin-bottom:10px}
 </style>
 </head>
 
@@ -38,7 +39,7 @@ textarea{resize:none}
 
 <div class="container">
 
-<!-- PRODUTO 300ml -->
+<!-- PRODUTO -->
 <div class="card" data-nome="Açaí 300ml" data-preco="14">
   <div class="card-conteudo">
     <img src="1770533878737.png">
@@ -53,54 +54,7 @@ textarea{resize:none}
     </div>
   </div>
 
-  <h4>Adicionais (R$2,00 cada)</h4>
-
-  <div class="adicional" data-nome="Paçoca" data-preco="2">
-    <span>Paçoca</span>
-    <div class="quantidade">
-      <button onclick="alterarQtd(this,-1)">−</button>
-      <span class="qtd">0</span>
-      <button onclick="alterarQtd(this,1)">+</button>
-    </div>
-  </div>
-
-  <div class="adicional" data-nome="Leite em pó" data-preco="2">
-    <span>Leite em pó</span>
-    <div class="quantidade">
-      <button onclick="alterarQtd(this,-1)">−</button>
-      <span class="qtd">0</span>
-      <button onclick="alterarQtd(this,1)">+</button>
-    </div>
-  </div>
-
-  <div class="adicional" data-nome="Leite condensado" data-preco="2">
-    <span>Leite condensado</span>
-    <div class="quantidade">
-      <button onclick="alterarQtd(this,-1)">−</button>
-      <span class="qtd">0</span>
-      <button onclick="alterarQtd(this,1)">+</button>
-    </div>
-  </div>
-
-  <button class="botao-add" onclick="adicionarCarrinho(this)">Adicionar</button>
-</div>
-
-<!-- PRODUTO 500ml -->
-<div class="card" data-nome="Açaí 500ml" data-preco="18">
-  <div class="card-conteudo">
-    <img src="1770533878737.png">
-    <div class="card-info">
-      <h3>500ml</h3>
-      <div class="preco">R$ 18,00</div>
-      <div class="quantidade">
-        <button onclick="alterarQtd(this,-1)">−</button>
-        <span class="qtd">1</span>
-        <button onclick="alterarQtd(this,1)">+</button>
-      </div>
-    </div>
-  </div>
-
-  <h4>Adicionais (R$2,00 cada)</h4>
+  <h4>Adicionais (R$ 2,00)</h4>
 
   <div class="adicional" data-nome="Paçoca" data-preco="2">
     <span>Paçoca</span>
@@ -139,7 +93,6 @@ textarea{resize:none}
 <h2>Seu Pedido</h2>
 
 <input id="nomeCliente" placeholder="Nome">
-<input id="enderecoCliente" placeholder="Endereço (se entrega)">
 
 <select id="tipoEntrega">
   <option value="">Forma de entrega</option>
@@ -147,7 +100,7 @@ textarea{resize:none}
   <option value="jacira">Entrega Jardim Jacira (+R$4)</option>
 </select>
 
-<div id="tempoEntrega" style="font-size:14px;color:#555"></div>
+<input id="enderecoCliente" placeholder="Endereço (se entrega)">
 
 <select id="pagamento">
   <option value="">Forma de pagamento</option>
@@ -155,11 +108,18 @@ textarea{resize:none}
   <option>Dinheiro</option>
 </select>
 
-<input id="troco" placeholder="Troco para quanto? (se dinheiro)">
+<div id="pixInfo" class="pixBox" style="display:none">
+  <b>Pix:</b> 11984550595<br>
+  <b>Nome:</b> Marcyele da Silva Maciel<br><br>
+  <label>
+    <input type="checkbox" id="confirmouPix">
+    Já realizei o pagamento e enviarei o comprovante
+  </label>
+</div>
+
 <textarea id="obs" placeholder="Observações do pedido"></textarea>
 
 <div id="lista"></div>
-<div id="taxaEntregaDiv"></div>
 <div class="total" id="totalDiv">Total: R$ 0,00</div>
 
 <button onclick="finalizar()">Finalizar no WhatsApp</button><br><br>
@@ -168,26 +128,12 @@ textarea{resize:none}
 
 <div id="carrinhoIcon" onclick="abrirCarrinho()">🛒 <span id="contador">0</span></div>
 
-<!-- QR CODE -->
-<div style="text-align:center;padding:20px">
-  <p><b>📲 Acesse nosso cardápio</b></p>
-  <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://mmarcyele-maker.github.io/acaimsm-site/">
-</div>
-
 <script>
 let carrinho=[], total=0, taxaEntrega=0;
 
-const carrinhoBox=document.getElementById("carrinho");
-const contador=document.getElementById("contador");
-const totalDiv=document.getElementById("totalDiv");
-const taxaEntregaDiv=document.getElementById("taxaEntregaDiv");
-const tempoEntregaDiv=document.getElementById("tempoEntrega");
-
 function alterarQtd(btn,v){
   let s=btn.parentElement.querySelector(".qtd");
-  let n=parseInt(s.innerText)+v;
-  if(n<0)n=0;
-  s.innerText=n;
+  s.innerText=Math.max(0,parseInt(s.innerText)+v);
 }
 
 function adicionarCarrinho(b){
@@ -202,8 +148,9 @@ function adicionarCarrinho(b){
   c.querySelectorAll(".adicional").forEach(a=>{
     let q=+a.querySelector(".qtd").innerText;
     if(q){
-      sub+=q*2;
-      adicionais.push(`${a.dataset.nome} x${q}`);
+      let totalAdd=q*qtd;
+      sub+=totalAdd*2;
+      adicionais.push(`${a.dataset.nome} x${totalAdd}`);
       a.querySelector(".qtd").innerText=0;
     }
   });
@@ -224,15 +171,15 @@ function atualizar(){
     lista.innerHTML+=`
       <div class="item-carrinho">
         <b>${i.nome} x${i.qtd}</b><br>
-        ${i.adicionais.length ? "Adicionais: "+i.adicionais.join(", ")+"<br>" : ""}
-        <small>Subtotal: R$ ${i.sub.toFixed(2)}</small><br>
+        ${i.adicionais.length?"➕ "+i.adicionais.join(", ")+"<br>":""}
+        Subtotal: R$ ${i.sub.toFixed(2)}<br>
         <span class="remover" onclick="remover(${n})">Remover</span>
       </div>`;
   });
 
-  contador.innerText=itens;
-  taxaEntregaDiv.innerText = taxaEntrega ? "Taxa de entrega: R$ 4,00" : "";
-  totalDiv.innerText="Total: R$ "+(total+taxaEntrega).toFixed(2);
+  document.getElementById("contador").innerText=itens;
+  document.getElementById("totalDiv").innerText=
+    "Total: R$ "+(total+taxaEntrega).toFixed(2);
 }
 
 function remover(i){
@@ -241,46 +188,45 @@ function remover(i){
   atualizar();
 }
 
-function abrirCarrinho(){atualizar();carrinhoBox.classList.add("ativo")}
-function fecharCarrinho(){carrinhoBox.classList.remove("ativo")}
+function abrirCarrinho(){atualizar();carrinho.classList.add("ativo")}
+function fecharCarrinho(){carrinho.classList.remove("ativo")}
 
-document.getElementById("tipoEntrega").addEventListener("change",e=>{
-  if(e.target.value==="jacira"){
-    taxaEntrega=4;
-    tempoEntregaDiv.innerText="⏱️ Entrega estimada: 30 a 45 minutos";
-  }else if(e.target.value==="retirada"){
-    taxaEntrega=0;
-    tempoEntregaDiv.innerText="⏱️ Retirada estimada: 10 a 15 minutos";
-  }else{
-    taxaEntrega=0;
-    tempoEntregaDiv.innerText="";
-  }
+tipoEntrega.onchange=e=>{
+  taxaEntrega=e.target.value==="jacira"?4:0;
   atualizar();
-});
+}
+
+pagamento.onchange=()=>{
+  pixInfo.style.display=pagamento.value==="Pix"?"block":"none";
+}
 
 function finalizar(){
-  if(!nomeCliente.value || !tipoEntrega.value || !pagamento.value){
-    alert("Preencha nome, entrega e pagamento");
+  if(!nomeCliente.value||!tipoEntrega.value||!pagamento.value){
+    alert("Preencha os dados obrigatórios");
+    return;
+  }
+  if(pagamento.value==="Pix"&&!confirmouPix.checked){
+    alert("Confirme o pagamento Pix");
     return;
   }
 
-  let msg=`🍧 *Pedido Açaí MSM*%0A👤 Cliente: ${nomeCliente.value}%0A`;
+  let msg=`🍧 *Pedido Açaí MSM*%0A👤 ${nomeCliente.value}%0A`;
 
-  msg+= tipoEntrega.value==="retirada"
-    ? `📍 Retirada: Rua Érico Veríssimo 159%0A`
-    : `🏠 Endereço: ${enderecoCliente.value}%0A🚚 Entrega Jardim Jacira: R$ 4,00%0A`;
+  msg+=tipoEntrega.value==="retirada"
+    ?`📍 Retirada: Rua Érico Veríssimo 159%0A`
+    :`🚚 Entrega Jardim Jacira (+R$4)%0A`;
 
-  msg+=`%0A🧾 *Itens:*%0A`;
+  msg+=`%0A🧾 Itens:%0A`;
   carrinho.forEach(i=>{
     msg+=`• ${i.nome} x${i.qtd} – R$ ${i.sub.toFixed(2)}%0A`;
     if(i.adicionais.length) msg+=`  ➕ ${i.adicionais.join(", ")}%0A`;
   });
 
   if(obs.value) msg+=`%0A📝 Obs: ${obs.value}%0A`;
-  if(pagamento.value==="Dinheiro" && troco.value) msg+=`💵 Troco para: ${troco.value}%0A`;
+  if(pagamento.value==="Pix") msg+=`%0A📎 Envie o comprovante do Pix aqui`;
 
-  msg+=`%0A💳 Pagamento: ${pagamento.value}%0A`;
-  msg+=`💰 *Total: R$ ${(total+taxaEntrega).toFixed(2)}*`;
+  msg+=`%0A💳 Pagamento: ${pagamento.value}`;
+  msg+=`%0A💰 Total: R$ ${(total+taxaEntrega).toFixed(2)}`;
 
   window.open("https://wa.me/5511943818352?text="+msg);
 }
