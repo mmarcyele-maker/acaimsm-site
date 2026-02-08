@@ -217,16 +217,58 @@ function adicionarCarrinho(btn){
 }
 
 function atualizarCarrinho(){
-  let lista=document.getElementById("lista");
-  lista.innerHTML="";
-  let itens=0;
-  carrinho.forEach(i=>{
-    itens+=i.qtd;
-    lista.innerHTML+=`<div class="item-carrinho"><b>${i.nome} x${i.qtd}</b><br>${i.adicionais.length?"➕ "+i.adicionais.join("<br>"):""}<br>Subtotal: R$ ${i.sub.toFixed(2)}</div>`;
+  let lista = document.getElementById("lista");
+  lista.innerHTML = "";
+  let itens = 0;
+
+  carrinho.forEach((i, index)=>{
+    itens += i.qtd;
+
+    let adicionaisHtml = "";
+    i.adicionais.forEach((a, aIndex)=>{
+      adicionaisHtml += `
+        <div>
+          ➕ ${a}
+          <button onclick="removerAdicional(${index}, ${aIndex})">❌</button>
+        </div>
+      `;
+    });
+
+    lista.innerHTML += `
+      <div class="item-carrinho">
+        <b>${i.nome} x${i.qtd}</b>
+        <button onclick="removerItem(${index})" style="float:right">🗑️</button>
+        <br>
+        ${adicionaisHtml}
+        <br>
+        Subtotal: R$ ${i.sub.toFixed(2)}
+      </div>
+    `;
   });
-  document.getElementById("contador").innerText=itens;
-  document.getElementById("totalDiv").innerText="Total: R$ "+(total+taxaEntrega).toFixed(2);
+
+  document.getElementById("contador").innerText = itens;
+  document.getElementById("totalDiv").innerText =
+    "Total: R$ " + (total + taxaEntrega).toFixed(2);
+  }
+  function removerItem(index){
+  total -= carrinho[index].sub;
+  carrinho.splice(index, 1);
+  atualizarCarrinho();
 }
+
+function removerAdicional(indexItem, indexAdicional){
+  let item = carrinho[indexItem];
+
+  let texto = item.adicionais[indexAdicional];
+  let valor = parseFloat(texto.match(/R\$([\d.]+)/)[1]);
+
+  item.sub -= valor;
+  total -= valor;
+
+  item.adicionais.splice(indexAdicional, 1);
+
+  atualizarCarrinho();
+  }
 
 function abrirCarrinho(){ atualizarCarrinho(); document.getElementById("carrinhoBox").classList.add("ativo"); }
 function fecharCarrinho(){ document.getElementById("carrinhoBox").classList.remove("ativo"); }
