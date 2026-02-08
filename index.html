@@ -1,96 +1,161 @@
-<!DOCTYPE html><html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Açaí Batido MSM</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom, #4c1d95, #6d28d9);
-      color: white;
-      text-align: center;
-    }
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 20px;
-    }
-    h1 {
-      font-size: 40px;
-      margin-bottom: 5px;
-    }
-    .card {
-      background: #5b21b6;
-      border-radius: 20px;
-      padding: 20px;
-      margin: 20px 0;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-    }
-    .price {
-      font-size: 28px;
-      font-weight: bold;
-      margin: 10px 0;
-    }
-    .button {
-      display: inline-block;
-      padding: 12px 25px;
-      background: white;
-      color: #4c1d95;
-      text-decoration: none;
-      font-weight: bold;
-      border-radius: 30px;
-      margin-top: 10px;
-    }
-    .promo {
-      background: #facc15;
-      color: #4c1d95;
-      padding: 15px;
-      border-radius: 15px;
-      font-weight: bold;
-      margin: 20px 0;
-    }
-    footer {
-      margin-top: 40px;
-      font-size: 14px;
-      opacity: 0.8;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Açaí Batido MSM</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial, sans-serif;
+background:linear-gradient(135deg,#5e0080,#9c27b0);
+color:white;
+text-align:center;
+}
+
+.container{
+background:white;
+color:black;
+margin:20px;
+padding:20px;
+border-radius:15px;
+}
+
+.logo{
+width:200px;
+display:block;
+margin:20px auto;
+}
+
+h1{
+color:#5e0080;
+}
+
+select,input{
+width:100%;
+padding:10px;
+margin:8px 0;
+}
+
+button{
+background:#5e0080;
+color:white;
+border:none;
+padding:12px;
+border-radius:8px;
+font-size:16px;
+cursor:pointer;
+width:100%;
+}
+
+.hidden{
+display:none;
+}
+</style>
 </head>
+
 <body>
-  <div class="container">
-    <h1>Açaí Batido MSM 💜</h1>
-    <p>Cremoso, geladinho e preparado na hora!</p><div class="promo">
-  🔥 PROMOÇÃO: 500ml + 1 adicional por R$20 🔥
+
+<img src="logo.png" class="logo">
+
+<div class="container">
+
+<h1>Açaí Batido MSM</h1>
+
+<label>Tamanho:</label>
+<select id="tamanho">
+<option value="300ml - R$14">300ml - R$14</option>
+<option value="500ml - R$18">500ml - R$18</option>
+</select>
+
+<label>Adicionais:</label><br>
+<input type="checkbox" value="Leite"> Leite<br>
+<input type="checkbox" value="Leite condensado"> Leite condensado<br>
+<input type="checkbox" value="Granola"> Granola<br>
+<input type="checkbox" value="Paçoca"> Paçoca<br>
+
+<label>Tipo de pedido:</label>
+<select id="tipoPedido">
+<option value="Retirada">Retirada no local</option>
+<option value="Entrega">Entrega</option>
+</select>
+
+<div id="enderecoDiv" class="hidden">
+<label>Endereço:</label>
+<input type="text" id="endereco" placeholder="Digite seu endereço">
 </div>
 
-<div class="card">
-  <h2>300ml</h2>
-  <div class="price">R$ 14</div>
-  <a class="button" href="https://wa.me/5511943818352?text=Olá,%20quero%20um%20açaí%20300ml">Pedir no WhatsApp</a>
+<label>Pagamento:</label>
+<select id="pagamento">
+<option value="Pix">Pix</option>
+<option value="Dinheiro">Dinheiro</option>
+</select>
+
+<div id="trocoDiv" class="hidden">
+<label>Troco para quanto?</label>
+<input type="text" id="troco" placeholder="Ex: 50">
 </div>
 
-<div class="card">
-  <h2>500ml ⭐ Mais vendido</h2>
-  <div class="price">R$ 18</div>
-  <a class="button" href="https://wa.me/5511943818352?text=Olá,%20quero%20um%20açaí%20500ml">Pedir no WhatsApp</a>
+<button onclick="enviarPedido()">Fazer Pedido</button>
+
 </div>
 
-<div class="card">
-  <h2>Adicionais</h2>
-  <p>Paçoca - R$ 2</p>
-  <p>Leite Condensado - R$ 2</p>
-  <p>Leite em Pó - R$ 3</p>
-</div>
+<script>
 
-<a class="button" style="background:#22c55e;color:white;font-size:18px" href="https://wa.me/5511943818352">
-  Fazer Pedido Agora 📲
-</a>
+document.getElementById("tipoPedido").addEventListener("change", function(){
+if(this.value === "Entrega"){
+document.getElementById("enderecoDiv").classList.remove("hidden");
+}else{
+document.getElementById("enderecoDiv").classList.add("hidden");
+}
+});
 
-<footer>
-  © 2026 Açaí MSM - Entregas no bairro 💜
-</footer>
+document.getElementById("pagamento").addEventListener("change", function(){
+if(this.value === "Dinheiro"){
+document.getElementById("trocoDiv").classList.remove("hidden");
+}else{
+document.getElementById("trocoDiv").classList.add("hidden");
+}
+});
 
-  </div>
+function enviarPedido(){
+
+var tamanho = document.getElementById("tamanho").value;
+var tipoPedido = document.getElementById("tipoPedido").value;
+var pagamento = document.getElementById("pagamento").value;
+var endereco = document.getElementById("endereco").value;
+var troco = document.getElementById("troco").value;
+
+var adicionais = [];
+document.querySelectorAll("input[type=checkbox]:checked").forEach(function(item){
+adicionais.push(item.value);
+});
+
+var mensagem = "🍧 *Novo Pedido - Açaí Batido MSM*%0A%0A";
+mensagem += "📦 Tamanho: " + tamanho + "%0A";
+mensagem += "➕ Adicionais: " + (adicionais.length ? adicionais.join(", ") : "Nenhum") + "%0A";
+mensagem += "🚚 Tipo: " + tipoPedido + "%0A";
+
+if(tipoPedido === "Entrega"){
+mensagem += "📍 Endereço: " + endereco + "%0A";
+}
+
+mensagem += "💰 Pagamento: " + pagamento + "%0A";
+
+if(pagamento === "Dinheiro" && troco){
+mensagem += "💵 Troco para: R$" + troco + "%0A";
+}
+
+if(pagamento === "Pix"){
+mensagem += "%0A🔑 Chave Pix: 11943818352%0A";
+}
+
+var numero = "5511943818352";
+window.open("https://wa.me/" + numero + "?text=" + mensagem, "_blank");
+
+}
+</script>
+
 </body>
 </html>
