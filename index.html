@@ -3,203 +3,284 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Açaí Batido</title>
+<title>Açaí Batido MSM</title>
 
 <style>
 body{
-    margin:0;
-    font-family:Arial, Helvetica, sans-serif;
-    background:#f5f5f5;
+  margin:0;
+  font-family: 'Segoe UI', sans-serif;
+  background:#f2f2f2;
 }
 
 header{
-    background:linear-gradient(90deg,#6a0dad,#8a2be2);
-    color:white;
-    padding:20px;
-    text-align:center;
-    font-size:24px;
-    font-weight:bold;
+  background:linear-gradient(90deg,#5f00ff,#a100ff);
+  color:white;
+  padding:20px;
+  text-align:center;
+  font-size:22px;
+  font-weight:bold;
 }
 
 .container{
-    padding:15px;
+  padding:15px;
 }
 
 .card{
-    background:white;
-    border-radius:15px;
-    padding:15px;
-    margin-bottom:20px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.1);
+  background:white;
+  border-radius:18px;
+  padding:15px;
+  margin-bottom:20px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.08);
+  transition:0.3s;
 }
 
-.card img{
-    width:100%;
-    border-radius:15px;
+.card:hover{
+  transform:scale(1.02);
 }
 
-.price{
-    color:#6a0dad;
-    font-size:20px;
-    font-weight:bold;
-    margin:10px 0;
+.produto-img{
+  width:100%;
+  height:220px;
+  object-fit:cover;
+  border-radius:16px;
+}
+
+.preco{
+  color:#5f00ff;
+  font-weight:bold;
+  font-size:18px;
 }
 
 .adicionais label{
-    display:block;
-    margin:5px 0;
+  display:block;
+  margin-top:6px;
 }
 
 button{
-    background:#6a0dad;
-    color:white;
-    border:none;
-    padding:12px;
-    border-radius:10px;
-    width:100%;
-    font-size:16px;
-    cursor:pointer;
-    margin-top:10px;
+  background:#5f00ff;
+  color:white;
+  border:none;
+  padding:12px;
+  width:100%;
+  border-radius:12px;
+  font-size:15px;
+  margin-top:10px;
+  cursor:pointer;
 }
 
 button:hover{
-    background:#8a2be2;
+  background:#4500c7;
 }
 
-.pagamento, .entrega{
-    background:white;
-    padding:15px;
-    border-radius:15px;
-    margin-bottom:20px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.1);
+/* BOTÃO FLUTUANTE */
+#btnCarrinho{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#5f00ff;
+  color:white;
+  border-radius:50px;
+  padding:15px 20px;
+  font-size:16px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.2);
+  cursor:pointer;
+}
+
+#contador{
+  background:red;
+  padding:3px 8px;
+  border-radius:50%;
+  font-size:12px;
+  margin-left:5px;
+}
+
+/* CARRINHO LATERAL */
+#carrinho{
+  position:fixed;
+  top:0;
+  right:-100%;
+  width:90%;
+  max-width:400px;
+  height:100%;
+  background:white;
+  box-shadow:-4px 0 15px rgba(0,0,0,0.2);
+  padding:20px;
+  transition:0.4s;
+  overflow:auto;
+}
+
+#carrinho.ativo{
+  right:0;
+}
+
+select, input{
+  width:100%;
+  padding:10px;
+  margin-top:8px;
+  border-radius:8px;
+  border:1px solid #ccc;
+}
+
+#trocoCampo{
+  display:none;
+}
+
+.total{
+  font-weight:bold;
+  margin-top:10px;
+  font-size:18px;
 }
 </style>
 </head>
-
 <body>
 
-<header>🍇 Açaí Batido</header>
+<header>AÇAÍ BATIDO MSM</header>
 
 <div class="container">
 
-<div class="entrega">
-<strong>Forma de recebimento:</strong><br><br>
-
-<label>
-<input type="radio" name="recebimento" value="Retirada" checked>
-Retirada no local<br>
-<small>Rua Érico Veríssimo 159</small>
-</label>
-
-<br>
-
-<label>
-<input type="radio" name="recebimento" value="Entrega">
-Entrega (Somente Jardim Jacira + R$ 4,00)
-</label>
-</div>
-
 <!-- 300ML -->
 <div class="card">
-<img src="https://images.pexels.com/photos/5946623/pexels-photo-5946623.jpeg?auto=compress&cs=tinysrgb&w=800">
-
+<img src="https://images.unsplash.com/photo-1625944193115-06d5f7cfc7b6?q=80&w=800&auto=format&fit=crop" class="produto-img">
 <h3>300ml</h3>
-<div class="price">R$ 14,00</div>
+<div class="preco">R$ 14,00</div>
 
-<strong>Adicionais:</strong>
 <div class="adicionais">
-<label><input type="checkbox" value="Paçoca"> Paçoca + R$ 2,00</label>
-<label><input type="checkbox" value="Leite em pó"> Leite em pó + R$ 3,00</label>
-<label><input type="checkbox" value="Leite condensado"> Leite condensado + R$ 2,00</label>
+<label><input type="checkbox" value="Paçoca" data-preco="2"> Paçoca R$2,00</label>
+<label><input type="checkbox" value="Leite em pó" data-preco="3"> Leite em pó R$3,00</label>
+<label><input type="checkbox" value="Leite condensado" data-preco="2"> Leite condensado R$2,00</label>
 </div>
 
-<button onclick="enviarPedido('300ml',14)">Pedir pelo WhatsApp</button>
+<button onclick="adicionarCarrinho('300ml',14,this)">Adicionar</button>
 </div>
 
 <!-- 500ML -->
 <div class="card">
-<img src="https://images.pexels.com/photos/5946623/pexels-photo-5946623.jpeg?auto=compress&cs=tinysrgb&w=800">
-
+<img src="https://images.unsplash.com/photo-1625944193115-06d5f7cfc7b6?q=80&w=800&auto=format&fit=crop" class="produto-img">
 <h3>500ml</h3>
-<div class="price">R$ 18,00</div>
+<div class="preco">R$ 18,00</div>
 
-<strong>Adicionais:</strong>
 <div class="adicionais">
-<label><input type="checkbox" value="Paçoca"> Paçoca + R$ 2,00</label>
-<label><input type="checkbox" value="Leite em pó"> Leite em pó + R$ 3,00</label>
-<label><input type="checkbox" value="Leite condensado"> Leite condensado + R$ 2,00</label>
+<label><input type="checkbox" value="Paçoca" data-preco="2"> Paçoca R$2,00</label>
+<label><input type="checkbox" value="Leite em pó" data-preco="3"> Leite em pó R$3,00</label>
+<label><input type="checkbox" value="Leite condensado" data-preco="2"> Leite condensado R$2,00</label>
 </div>
 
-<button onclick="enviarPedido('500ml',18)">Pedir pelo WhatsApp</button>
+<button onclick="adicionarCarrinho('500ml',18,this)">Adicionar</button>
 </div>
 
-<div class="pagamento">
-<strong>Forma de pagamento:</strong><br><br>
-
-<label>
-<input type="radio" name="pagamento" value="Pix" checked>
-Pix
-</label>
-
-<br>
-
-<label>
-<input type="radio" name="pagamento" value="Dinheiro" onclick="mostrarTroco()">
-Dinheiro
-</label>
-
-<div id="trocoDiv" style="display:none; margin-top:10px;">
-Troco para quanto?
-<input type="number" id="troco" placeholder="Digite o valor">
-</div>
 </div>
 
+<!-- BOTÃO CARRINHO -->
+<div id="btnCarrinho" onclick="abrirCarrinho()">
+🛒 Carrinho <span id="contador">0</span>
+</div>
+
+<!-- CARRINHO -->
+<div id="carrinho">
+<h3>Seu Pedido</h3>
+<div id="itens"></div>
+
+<div class="total">Total: R$ <span id="total">0</span></div>
+
+<label>Entrega:</label>
+<select id="entrega" onchange="calcularTotal()">
+<option value="0">Retirada no local</option>
+<option value="4">Entrega Jardim Jacira (+4)</option>
+</select>
+
+<label>Pagamento:</label>
+<select id="pagamento" onchange="mostrarTroco()">
+<option>Pix</option>
+<option>Dinheiro</option>
+</select>
+
+<div id="trocoCampo">
+<label>Troco para quanto?</label>
+<input type="number" id="troco">
+</div>
+
+<button onclick="enviarWhats()">Finalizar Pedido</button>
 </div>
 
 <script>
-function mostrarTroco(){
-    document.getElementById("trocoDiv").style.display = "block";
+let carrinho = [];
+
+function adicionarCarrinho(nome, preco, botao){
+  let card = botao.parentElement;
+  let adicionais = card.querySelectorAll("input:checked");
+  let lista = [];
+  let totalItem = preco;
+
+  adicionais.forEach(a=>{
+    lista.push(a.value);
+    totalItem += parseFloat(a.dataset.preco);
+  });
+
+  carrinho.push({nome, lista, totalItem});
+  atualizarCarrinho();
+
+  adicionais.forEach(a=>a.checked=false);
 }
 
-function enviarPedido(tamanho, precoBase){
+function atualizarCarrinho(){
+  let itensDiv = document.getElementById("itens");
+  itensDiv.innerHTML="";
+  let total=0;
 
-    let adicionais = [];
-    let adicionalValor = 0;
+  carrinho.forEach(item=>{
+    itensDiv.innerHTML += `<p>${item.nome} - R$${item.totalItem}</p>`;
+    total += item.totalItem;
+  });
 
-    document.querySelectorAll(".card").forEach(card=>{
-        if(card.innerHTML.includes(tamanho)){
-            card.querySelectorAll("input[type=checkbox]").forEach(item=>{
-                if(item.checked){
-                    adicionais.push(item.value);
-                    if(item.value === "Paçoca") adicionalValor += 2;
-                    if(item.value === "Leite em pó") adicionalValor += 3;
-                    if(item.value === "Leite condensado") adicionalValor += 2;
-                }
-            });
-        }
-    });
+  document.getElementById("contador").innerText=carrinho.length;
+  document.getElementById("total").innerText=total;
+}
 
-    let entrega = document.querySelector("input[name='recebimento']:checked").value;
-    let taxa = entrega === "Entrega" ? 4 : 0;
+function abrirCarrinho(){
+  document.getElementById("carrinho").classList.toggle("ativo");
+}
 
-    let pagamento = document.querySelector("input[name='pagamento']:checked").value;
-    let troco = document.getElementById("troco").value;
+function mostrarTroco(){
+  let pagamento = document.getElementById("pagamento").value;
+  document.getElementById("trocoCampo").style.display =
+  pagamento==="Dinheiro" ? "block" : "none";
+}
 
-    let total = precoBase + adicionalValor + taxa;
+function calcularTotal(){
+  atualizarCarrinho();
+}
 
-    let mensagem = `🍇 *Pedido Açaí Batido*%0A`;
-    mensagem += `Tamanho: ${tamanho}%0A`;
-    mensagem += `Adicionais: ${adicionais.length > 0 ? adicionais.join(", ") : "Nenhum"}%0A`;
-    mensagem += `Recebimento: ${entrega}%0A`;
-    mensagem += `Pagamento: ${pagamento}%0A`;
+function enviarWhats(){
+  let total = document.getElementById("total").innerText;
+  let entrega = document.getElementById("entrega");
+  let taxa = parseFloat(entrega.value);
+  let tipoEntrega = entrega.options[entrega.selectedIndex].text;
+  let pagamento = document.getElementById("pagamento").value;
+  let troco = document.getElementById("troco").value;
 
-    if(pagamento === "Dinheiro" && troco){
-        mensagem += `Troco para: R$ ${troco}%0A`;
-    }
+  let mensagem="🍇 *Pedido Açaí Batido MSM*%0A%0A";
 
-    mensagem += `Total: R$ ${total},00`;
+  carrinho.forEach(item=>{
+    mensagem += item.nome + " - R$" + item.totalItem + "%0A";
+    if(item.lista.length)
+      mensagem += "Adicionais: "+ item.lista.join(", ")+"%0A";
+    mensagem+="%0A";
+  });
 
-    window.open(`https://wa.me/551194381832?text=${mensagem}`);
+  let totalFinal = parseFloat(total) + taxa;
+
+  mensagem += "Entrega: "+ tipoEntrega +"%0A";
+  mensagem += "Total: R$"+ totalFinal +"%0A";
+  mensagem += "Pagamento: "+ pagamento +"%0A";
+
+  if(pagamento==="Dinheiro" && troco){
+    mensagem += "Troco para: R$"+troco+"%0A";
+  }
+
+  mensagem += "%0A📍 Rua Érico Veríssimo 159";
+  mensagem += "%0A🔑 Pix: 11943818352";
+
+  window.open("https://wa.me/551194381832?text="+mensagem);
 }
 </script>
 
