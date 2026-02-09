@@ -162,18 +162,8 @@ button{cursor:pointer}
 <button onclick="fecharCarrinho()">Fechar</button>
 </div>
 
-<!-- Botão Admin no final -->
-<button id="adminBtn" onclick="abrirAdmin()">Admin</button>
 
-<!-- ADMIN -->
-<div id="adminBox">
-<h2>Painel Admin</h2>
-<div id="adminPedidos"></div>
-<div class="total" id="totalFaturado"></div>
-<button onclick="limparPedidos()">Limpar pedidos</button>
-<br><br>
-<button onclick="fecharAdmin()">Fechar</button>
-</div>
+
 
 <div id="carrinhoIcon" onclick="abrirCarrinho()">🛒 <span id="contador">0</span></div>
 
@@ -247,8 +237,17 @@ function finalizar(){
   if(pagamento.value==="Pix") msg+="\nEnvie o comprovante do Pix";
 
   msg+=`\n💳 Pagamento: ${pagamento.value}`;
-  msg+=`\n💰 Total: R$ ${(total+taxaEntrega).toFixed(2)}`;
 
+if (pagamento.value === "Dinheiro" && precisaTroco.value === "sim") {
+  const totalPedido = total + taxaEntrega;
+  const valorTrocoPara = parseFloat(trocoPara.value);
+  const troco = valorTrocoPara - totalPedido;
+
+  msg+=`\n💵 Troco para: R$ ${valorTrocoPara.toFixed(2)}`;
+  msg+=`\n💰 Troco: R$ ${troco.toFixed(2)}`;
+}
+
+msg+=`\n💰 Total: R$ ${(total+taxaEntrega).toFixed(2)}`;
   carrinho=[]; total=0; atualizarCarrinho();
   window.open("https://wa.me/5511943818352?text="+encodeURIComponent(msg));
 }
