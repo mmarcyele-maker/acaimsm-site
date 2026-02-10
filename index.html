@@ -320,8 +320,14 @@ if (pagamento.value === "Dinheiro" && precisaTroco.value === "sim") {
 
 msg+=`\n💰 Total: R$ ${(total+taxaEntrega).toFixed(2)}`;
   carrinho=[]; total=0; atualizarCarrinho();
-  
+  const telefone = "5511984550595"; // seu WhatsApp
+const mensagem = encodeURIComponent(msg);
 
+window.open(
+  `https://wa.me/${telefone}?text=${mensagem}`,
+  "_blank"
+);
+    }
 // ADMIN
 const senhaAdmin = "msm2026";
 function abrirAdmin(){
