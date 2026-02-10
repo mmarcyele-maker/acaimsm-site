@@ -243,10 +243,55 @@ function finalizar(){
   let pedido={nome:nomeCliente.value,tipoEntrega:tipoEntrega.value,endereco:enderecoCliente.value,pagamento:pagamento.value,obs:obs.value,itens:carrinho.slice(),taxaEntrega:taxaEntrega,total:total+taxaEntrega};
   pedidosSalvos.push(pedido);
   localStorage.setItem("pedidosSalvos",JSON.stringify(pedidosSalvos));
+const agora = new Date();
+const horarioPedido = agora.toLocaleTimeString("pt-BR", {
+  hour: "2-digit",
+  minute: "2-digit"
+});
 
-  let msg=`🍧 Pedido Açaí MSM\nCliente: ${nomeCliente.value}\n`;
-  msg+=tipoEntrega.value==="retirada"?`📍 Retirada: Rua Érico Veríssimo 159\n`:`🚚 Entrega Jardim Jacira (+R$4)\n`;
- if (tipoEntrega.value !== "retirada") {
+  let tempoRetirada = 10; // minutos
+let tempoEntrega = 25; // minutos
+  const horarioEstimadoRetirada = new Date(agora.getTime() + tempoRetirada * 60000);
+const horarioEstimadoEntrega = new Date(agora.getTime() + tempoEntrega * 60000);
+
+const horaRetirada = horarioEstimadoRetirada.toLocaleTimeString("pt-BR", {
+  hour: "2-digit",
+  minute: "2-digit"
+});
+
+const horaEntrega = horarioEstimadoEntrega.toLocaleTimeString("pt-BR", {
+  hour: "2-digit",
+  minute: "2-digit"
+});
+// Número do pedido reiniciado diariamente
+const hoje = new Date().toLocaleDateString("pt-BR");
+
+let numeroPedido = localStorage.getItem("numeroPedido");
+let dataPedido = localStorage.getItem("dataPedido");
+
+if (dataPedido !== hoje) {
+  numeroPedido = 1;
+  localStorage.setItem("dataPedido", hoje);
+} else {
+  numeroPedido = numeroPedido ? parseInt(numeroPedido) + 1 : 1;
+}
+
+localStorage.setItem("numeroPedido", numeroPedido);
+ let msg = `🍧 *PEDIDO – AÇAÍ MSM*\n\n`;
+  msg += `🧾 Pedido nº: ${numeroPedido}\n`;
+msg += `👤 Cliente: ${nomeCliente.value}\n`;
+msg += `🕒 Horário do pedido: ${horarioPedido}\n`;
+  if (tipoEntrega.value === "retirada") {
+  msg += `⏳ Retirada estimada: ${horaRetirada}\n`;
+} else {
+  msg += `⏳ Entrega estimada: ${horaEntrega}\n`;
+  }
+if (tipoEntrega.value === "retirada") {
+  msg += `📍 Retirada no local\n`;
+} else {
+  msg += `🚚 Entrega\n`;
+}
+  if (tipoEntrega.value !== "retirada") {
   msg += `🏠 Endereço: ${enderecoCliente.value}\n`;
 }
   msg+="\n🧾 Itens:\n";
@@ -275,8 +320,7 @@ if (pagamento.value === "Dinheiro" && precisaTroco.value === "sim") {
 
 msg+=`\n💰 Total: R$ ${(total+taxaEntrega).toFixed(2)}`;
   carrinho=[]; total=0; atualizarCarrinho();
-  window.open("https://wa.me/5511943818352?text="+encodeURIComponent(msg));
-}
+  
 
 // ADMIN
 const senhaAdmin = "msm2026";
