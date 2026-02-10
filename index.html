@@ -210,7 +210,21 @@ function atualizarCarrinho(){
   let itens=0;
   carrinho.forEach(i=>{
     itens+=i.qtd;
-    lista.innerHTML+=`<div class="item-carrinho"><b>${i.nome} x${i.qtd}</b><br>${i.adicionais.length?"➕ "+i.adicionais.join("<br>"):""}<br>Subtotal: R$ ${i.sub.toFixed(2)}</div>`;
+let adicionaisHtml = "";
+
+if (i.adicionais && i.adicionais.length) {
+  i.adicionais.forEach(a => {
+    adicionaisHtml += `<div class="adicional">• ${a.nome} x${a.qtd}</div>`;
+  });
+}
+
+lista.innerHTML += `
+  <div class="item-carrinho">
+    <b>${i.nome} x${i.qtd}</b>
+    ${adicionaisHtml}
+    <div class="subtotal">Subtotal: R$ ${i.sub.toFixed(2)}</div>
+  </div>
+`;
   });
   document.getElementById("contador").innerText=itens;
   document.getElementById("totalDiv").innerText="Total: R$ "+(total+taxaEntrega).toFixed(2);
