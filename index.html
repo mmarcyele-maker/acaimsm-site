@@ -189,7 +189,11 @@ function adicionarCarrinho(btn){
     if(q){
       let valor=q*p;
       sub+=valor;
-      adicionais.push(`${a.dataset.nome} R$${p.toFixed(2)} x${q} = R$${valor.toFixed(2)}`);
+      adicionais.push({
+  nome: a.dataset.nome,
+  qtd: q,
+  total: valor
+});
       a.querySelector(".qtd").innerText=0;
     }
   });
@@ -235,7 +239,11 @@ function finalizar(){
   carrinho.forEach(i=>{
     
     msg+=`• ${i.nome} x${i.qtd} – R$ ${i.sub.toFixed(2)}\n`;
-    if(i.adicionais.length) msg+=`  ➕ ${i.adicionais.join("\n")}\n`;
+if (i.adicionais.length) {
+  i.adicionais.forEach(ad => {
+    msg += `   • ${ad.nome} ${ad.qtd}x – R$ ${ad.total.toFixed(2)}\n`;
+  });
+}
   });
   if(obs.value) msg+="\nObs: "+obs.value;
   if(pagamento.value==="Pix") msg+="\nEnvie o comprovante do Pix";
